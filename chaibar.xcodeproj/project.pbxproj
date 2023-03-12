@@ -1,0 +1,701 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		498AB29729BC881A00104E7D /* RestAIRetrieve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29129BC881900104E7D /* RestAIRetrieve.swift */; };
+		498AB29829BC881A00104E7D /* RestPurchasesReceiptValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29229BC881900104E7D /* RestPurchasesReceiptValidation.swift */; };
+		498AB29929BC881A00104E7D /* RestUserPushRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29329BC881900104E7D /* RestUserPushRegister.swift */; };
+		498AB29A29BC881A00104E7D /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29429BC881A00104E7D /* RestApi.swift */; };
+		498AB29B29BC881A00104E7D /* RestControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29529BC881A00104E7D /* RestControl.swift */; };
+		498AB29C29BC881A00104E7D /* RestAuthenticate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29629BC881A00104E7D /* RestAuthenticate.swift */; };
+		498AB29F29BC884C00104E7D /* DebugHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29E29BC884C00104E7D /* DebugHelper.swift */; };
+		498AB2A129BC88C200104E7D /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A029BC88C200104E7D /* Singleton.swift */; };
+		498AB2A329BC89BB00104E7D /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A229BC89BB00104E7D /* KeychainHelper.swift */; };
+		498AB2A529BC8C1000104E7D /* DigestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A429BC8C1000104E7D /* DigestExtension.swift */; };
+		498AB2A829BCA98E00104E7D /* CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A729BCA98E00104E7D /* CornerRadius.swift */; };
+		498AB2AA29BCB85600104E7D /* HotkeySolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A929BCB85600104E7D /* HotkeySolution.swift */; };
+		498AB2AE29BE74A600104E7D /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2AD29BE74A600104E7D /* VisualEffectView.swift */; };
+		49C637FB29AF6ABD00DB9A4B /* chaibarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C637FA29AF6ABD00DB9A4B /* chaibarApp.swift */; };
+		49C637FD29AF6ABD00DB9A4B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C637FC29AF6ABD00DB9A4B /* ContentView.swift */; };
+		49C637FF29AF6ABF00DB9A4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C637FE29AF6ABF00DB9A4B /* Assets.xcassets */; };
+		49C6380229AF6ABF00DB9A4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C6380129AF6ABF00DB9A4B /* Preview Assets.xcassets */; };
+		49C6380D29AF6ABF00DB9A4B /* chaibarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6380C29AF6ABF00DB9A4B /* chaibarTests.swift */; };
+		49C6381729AF6ABF00DB9A4B /* chaibarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6381629AF6ABF00DB9A4B /* chaibarUITests.swift */; };
+		49C6381929AF6ABF00DB9A4B /* chaibarUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6381829AF6ABF00DB9A4B /* chaibarUITestsLaunchTests.swift */; };
+		49C6382629AF6B0100DB9A4B /* FloatingBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6382529AF6B0100DB9A4B /* FloatingBar.swift */; };
+		49C6382829AF6B4D00DB9A4B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6382729AF6B4D00DB9A4B /* AppDelegate.swift */; };
+		49C6382B29AF74E800DB9A4B /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6382A29AF74E800DB9A4B /* Placeholder.swift */; };
+		49C6382D29AF964200DB9A4B /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C6382C29AF964200DB9A4B /* StatusBarController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		49C6380929AF6ABF00DB9A4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49C637EF29AF6ABD00DB9A4B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49C637F629AF6ABD00DB9A4B;
+			remoteInfo = chaibar;
+		};
+		49C6381329AF6ABF00DB9A4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49C637EF29AF6ABD00DB9A4B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 49C637F629AF6ABD00DB9A4B;
+			remoteInfo = chaibar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		498AB29129BC881900104E7D /* RestAIRetrieve.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAIRetrieve.swift; sourceTree = "<group>"; };
+		498AB29229BC881900104E7D /* RestPurchasesReceiptValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestPurchasesReceiptValidation.swift; sourceTree = "<group>"; };
+		498AB29329BC881900104E7D /* RestUserPushRegister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestUserPushRegister.swift; sourceTree = "<group>"; };
+		498AB29429BC881A00104E7D /* RestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
+		498AB29529BC881A00104E7D /* RestControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestControl.swift; sourceTree = "<group>"; };
+		498AB29629BC881A00104E7D /* RestAuthenticate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAuthenticate.swift; sourceTree = "<group>"; };
+		498AB29E29BC884C00104E7D /* DebugHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugHelper.swift; sourceTree = "<group>"; };
+		498AB2A029BC88C200104E7D /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
+		498AB2A229BC89BB00104E7D /* KeychainHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		498AB2A429BC8C1000104E7D /* DigestExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigestExtension.swift; sourceTree = "<group>"; };
+		498AB2A629BC8D0300104E7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		498AB2A729BCA98E00104E7D /* CornerRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadius.swift; sourceTree = "<group>"; };
+		498AB2A929BCB85600104E7D /* HotkeySolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeySolution.swift; sourceTree = "<group>"; };
+		498AB2AD29BE74A600104E7D /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		49C637F729AF6ABD00DB9A4B /* chaibar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chaibar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		49C637FA29AF6ABD00DB9A4B /* chaibarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chaibarApp.swift; sourceTree = "<group>"; };
+		49C637FC29AF6ABD00DB9A4B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		49C637FE29AF6ABF00DB9A4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		49C6380129AF6ABF00DB9A4B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		49C6380329AF6ABF00DB9A4B /* chaibar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = chaibar.entitlements; sourceTree = "<group>"; };
+		49C6380829AF6ABF00DB9A4B /* chaibarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chaibarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49C6380C29AF6ABF00DB9A4B /* chaibarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chaibarTests.swift; sourceTree = "<group>"; };
+		49C6381229AF6ABF00DB9A4B /* chaibarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chaibarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		49C6381629AF6ABF00DB9A4B /* chaibarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chaibarUITests.swift; sourceTree = "<group>"; };
+		49C6381829AF6ABF00DB9A4B /* chaibarUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chaibarUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		49C6382529AF6B0100DB9A4B /* FloatingBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBar.swift; sourceTree = "<group>"; };
+		49C6382729AF6B4D00DB9A4B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		49C6382A29AF74E800DB9A4B /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
+		49C6382C29AF964200DB9A4B /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		49C637F429AF6ABD00DB9A4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C6380529AF6ABF00DB9A4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C6380F29AF6ABF00DB9A4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		498AB28F29BC87B800104E7D /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				498AB29029BC87EB00104E7D /* RestAPI */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
+		498AB29029BC87EB00104E7D /* RestAPI */ = {
+			isa = PBXGroup;
+			children = (
+				498AB29429BC881A00104E7D /* RestApi.swift */,
+				498AB29529BC881A00104E7D /* RestControl.swift */,
+				498AB29129BC881900104E7D /* RestAIRetrieve.swift */,
+				498AB29629BC881A00104E7D /* RestAuthenticate.swift */,
+				498AB29229BC881900104E7D /* RestPurchasesReceiptValidation.swift */,
+				498AB29329BC881900104E7D /* RestUserPushRegister.swift */,
+			);
+			path = RestAPI;
+			sourceTree = "<group>";
+		};
+		498AB29D29BC883500104E7D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				498AB29E29BC884C00104E7D /* DebugHelper.swift */,
+				498AB2A229BC89BB00104E7D /* KeychainHelper.swift */,
+				498AB2A929BCB85600104E7D /* HotkeySolution.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		498AB2AB29BE73DF00104E7D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				498AB2AC29BE747F00104E7D /* UIKitRepresentables */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		498AB2AC29BE747F00104E7D /* UIKitRepresentables */ = {
+			isa = PBXGroup;
+			children = (
+				498AB2AD29BE74A600104E7D /* VisualEffectView.swift */,
+			);
+			path = UIKitRepresentables;
+			sourceTree = "<group>";
+		};
+		49C637EE29AF6ABD00DB9A4B = {
+			isa = PBXGroup;
+			children = (
+				49C637F929AF6ABD00DB9A4B /* chaibar */,
+				49C6380B29AF6ABF00DB9A4B /* chaibarTests */,
+				49C6381529AF6ABF00DB9A4B /* chaibarUITests */,
+				49C637F829AF6ABD00DB9A4B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		49C637F829AF6ABD00DB9A4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				49C637F729AF6ABD00DB9A4B /* chaibar.app */,
+				49C6380829AF6ABF00DB9A4B /* chaibarTests.xctest */,
+				49C6381229AF6ABF00DB9A4B /* chaibarUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		49C637F929AF6ABD00DB9A4B /* chaibar */ = {
+			isa = PBXGroup;
+			children = (
+				498AB2A629BC8D0300104E7D /* Info.plist */,
+				498AB29D29BC883500104E7D /* Helpers */,
+				498AB28F29BC87B800104E7D /* DataModels */,
+				498AB2AB29BE73DF00104E7D /* Views */,
+				49C6382929AF74C800DB9A4B /* Extensions */,
+				49C637FA29AF6ABD00DB9A4B /* chaibarApp.swift */,
+				49C6382729AF6B4D00DB9A4B /* AppDelegate.swift */,
+				49C6382C29AF964200DB9A4B /* StatusBarController.swift */,
+				49C637FC29AF6ABD00DB9A4B /* ContentView.swift */,
+				49C6382529AF6B0100DB9A4B /* FloatingBar.swift */,
+				498AB2A029BC88C200104E7D /* Singleton.swift */,
+				49C637FE29AF6ABF00DB9A4B /* Assets.xcassets */,
+				49C6380329AF6ABF00DB9A4B /* chaibar.entitlements */,
+				49C6380029AF6ABF00DB9A4B /* Preview Content */,
+			);
+			path = chaibar;
+			sourceTree = "<group>";
+		};
+		49C6380029AF6ABF00DB9A4B /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				49C6380129AF6ABF00DB9A4B /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		49C6380B29AF6ABF00DB9A4B /* chaibarTests */ = {
+			isa = PBXGroup;
+			children = (
+				49C6380C29AF6ABF00DB9A4B /* chaibarTests.swift */,
+			);
+			path = chaibarTests;
+			sourceTree = "<group>";
+		};
+		49C6381529AF6ABF00DB9A4B /* chaibarUITests */ = {
+			isa = PBXGroup;
+			children = (
+				49C6381629AF6ABF00DB9A4B /* chaibarUITests.swift */,
+				49C6381829AF6ABF00DB9A4B /* chaibarUITestsLaunchTests.swift */,
+			);
+			path = chaibarUITests;
+			sourceTree = "<group>";
+		};
+		49C6382929AF74C800DB9A4B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				49C6382A29AF74E800DB9A4B /* Placeholder.swift */,
+				498AB2A429BC8C1000104E7D /* DigestExtension.swift */,
+				498AB2A729BCA98E00104E7D /* CornerRadius.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		49C637F629AF6ABD00DB9A4B /* chaibar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49C6381C29AF6ABF00DB9A4B /* Build configuration list for PBXNativeTarget "chaibar" */;
+			buildPhases = (
+				49C637F329AF6ABD00DB9A4B /* Sources */,
+				49C637F429AF6ABD00DB9A4B /* Frameworks */,
+				49C637F529AF6ABD00DB9A4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = chaibar;
+			productName = chaibar;
+			productReference = 49C637F729AF6ABD00DB9A4B /* chaibar.app */;
+			productType = "com.apple.product-type.application";
+		};
+		49C6380729AF6ABF00DB9A4B /* chaibarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49C6381F29AF6ABF00DB9A4B /* Build configuration list for PBXNativeTarget "chaibarTests" */;
+			buildPhases = (
+				49C6380429AF6ABF00DB9A4B /* Sources */,
+				49C6380529AF6ABF00DB9A4B /* Frameworks */,
+				49C6380629AF6ABF00DB9A4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49C6380A29AF6ABF00DB9A4B /* PBXTargetDependency */,
+			);
+			name = chaibarTests;
+			productName = chaibarTests;
+			productReference = 49C6380829AF6ABF00DB9A4B /* chaibarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		49C6381129AF6ABF00DB9A4B /* chaibarUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49C6382229AF6ABF00DB9A4B /* Build configuration list for PBXNativeTarget "chaibarUITests" */;
+			buildPhases = (
+				49C6380E29AF6ABF00DB9A4B /* Sources */,
+				49C6380F29AF6ABF00DB9A4B /* Frameworks */,
+				49C6381029AF6ABF00DB9A4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49C6381429AF6ABF00DB9A4B /* PBXTargetDependency */,
+			);
+			name = chaibarUITests;
+			productName = chaibarUITests;
+			productReference = 49C6381229AF6ABF00DB9A4B /* chaibarUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		49C637EF29AF6ABD00DB9A4B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					49C637F629AF6ABD00DB9A4B = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					49C6380729AF6ABF00DB9A4B = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 49C637F629AF6ABD00DB9A4B;
+					};
+					49C6381129AF6ABF00DB9A4B = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 49C637F629AF6ABD00DB9A4B;
+					};
+				};
+			};
+			buildConfigurationList = 49C637F229AF6ABD00DB9A4B /* Build configuration list for PBXProject "chaibar" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 49C637EE29AF6ABD00DB9A4B;
+			productRefGroup = 49C637F829AF6ABD00DB9A4B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				49C637F629AF6ABD00DB9A4B /* chaibar */,
+				49C6380729AF6ABF00DB9A4B /* chaibarTests */,
+				49C6381129AF6ABF00DB9A4B /* chaibarUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		49C637F529AF6ABD00DB9A4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49C6380229AF6ABF00DB9A4B /* Preview Assets.xcassets in Resources */,
+				49C637FF29AF6ABF00DB9A4B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C6380629AF6ABF00DB9A4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C6381029AF6ABF00DB9A4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49C637F329AF6ABD00DB9A4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				498AB29A29BC881A00104E7D /* RestApi.swift in Sources */,
+				498AB2A129BC88C200104E7D /* Singleton.swift in Sources */,
+				49C6382829AF6B4D00DB9A4B /* AppDelegate.swift in Sources */,
+				49C6382D29AF964200DB9A4B /* StatusBarController.swift in Sources */,
+				498AB29829BC881A00104E7D /* RestPurchasesReceiptValidation.swift in Sources */,
+				498AB2A829BCA98E00104E7D /* CornerRadius.swift in Sources */,
+				498AB29929BC881A00104E7D /* RestUserPushRegister.swift in Sources */,
+				49C6382B29AF74E800DB9A4B /* Placeholder.swift in Sources */,
+				49C637FD29AF6ABD00DB9A4B /* ContentView.swift in Sources */,
+				498AB2AA29BCB85600104E7D /* HotkeySolution.swift in Sources */,
+				498AB29729BC881A00104E7D /* RestAIRetrieve.swift in Sources */,
+				49C637FB29AF6ABD00DB9A4B /* chaibarApp.swift in Sources */,
+				49C6382629AF6B0100DB9A4B /* FloatingBar.swift in Sources */,
+				498AB29C29BC881A00104E7D /* RestAuthenticate.swift in Sources */,
+				498AB29F29BC884C00104E7D /* DebugHelper.swift in Sources */,
+				498AB2A529BC8C1000104E7D /* DigestExtension.swift in Sources */,
+				498AB2A329BC89BB00104E7D /* KeychainHelper.swift in Sources */,
+				498AB2AE29BE74A600104E7D /* VisualEffectView.swift in Sources */,
+				498AB29B29BC881A00104E7D /* RestControl.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C6380429AF6ABF00DB9A4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49C6380D29AF6ABF00DB9A4B /* chaibarTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		49C6380E29AF6ABF00DB9A4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49C6381729AF6ABF00DB9A4B /* chaibarUITests.swift in Sources */,
+				49C6381929AF6ABF00DB9A4B /* chaibarUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		49C6380A29AF6ABF00DB9A4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49C637F629AF6ABD00DB9A4B /* chaibar */;
+			targetProxy = 49C6380929AF6ABF00DB9A4B /* PBXContainerItemProxy */;
+		};
+		49C6381429AF6ABF00DB9A4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 49C637F629AF6ABD00DB9A4B /* chaibar */;
+			targetProxy = 49C6381329AF6ABF00DB9A4B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		49C6381A29AF6ABF00DB9A4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		49C6381B29AF6ABF00DB9A4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		49C6381D29AF6ABF00DB9A4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = chaibar/chaibar.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"chaibar/Preview Content\"";
+				DEVELOPMENT_TEAM = TTQ25JK6WR;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = chaibar/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		49C6381E29AF6ABF00DB9A4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = chaibar/chaibar.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"chaibar/Preview Content\"";
+				DEVELOPMENT_TEAM = TTQ25JK6WR;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = chaibar/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		49C6382029AF6ABF00DB9A4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TTQ25JK6WR;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chaibar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/chaibar";
+			};
+			name = Debug;
+		};
+		49C6382129AF6ABF00DB9A4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TTQ25JK6WR;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibarTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chaibar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/chaibar";
+			};
+			name = Release;
+		};
+		49C6382329AF6ABF00DB9A4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TTQ25JK6WR;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibarUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = chaibar;
+			};
+			name = Debug;
+		};
+		49C6382429AF6ABF00DB9A4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TTQ25JK6WR;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibarUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = chaibar;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		49C637F229AF6ABD00DB9A4B /* Build configuration list for PBXProject "chaibar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49C6381A29AF6ABF00DB9A4B /* Debug */,
+				49C6381B29AF6ABF00DB9A4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49C6381C29AF6ABF00DB9A4B /* Build configuration list for PBXNativeTarget "chaibar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49C6381D29AF6ABF00DB9A4B /* Debug */,
+				49C6381E29AF6ABF00DB9A4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49C6381F29AF6ABF00DB9A4B /* Build configuration list for PBXNativeTarget "chaibarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49C6382029AF6ABF00DB9A4B /* Debug */,
+				49C6382129AF6ABF00DB9A4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		49C6382229AF6ABF00DB9A4B /* Build configuration list for PBXNativeTarget "chaibarUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				49C6382329AF6ABF00DB9A4B /* Debug */,
+				49C6382429AF6ABF00DB9A4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 49C637EF29AF6ABD00DB9A4B /* Project object */;
+}
