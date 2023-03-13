@@ -16,18 +16,46 @@ class StatusBarController {
     {
         statusBar = .init()
         
+        // Create status bar
         statusItem = statusBar.statusItem(withLength: NSStatusItem.squareLength)
         
+        // Add a menu and a menu item
+        let menu = NSMenu()
+        
+        let showMenuItem = NSMenuItem()
+        showMenuItem.title = "Show / Hide Bar"
+        showMenuItem.action = #selector(showAppTapped(sender:))
+        showMenuItem.target = self
+        menu.addItem(showMenuItem)
+        
+        menu.addItem(.separator())
+        
+        let quitMenuItem = NSMenuItem()
+        quitMenuItem.title = "Quit"
+        quitMenuItem.action = #selector(menuItemQuitTapped(sender:))
+        quitMenuItem.target = self
+        menu.addItem(quitMenuItem)
+        
+        //Set the menu
+        self.statusItem.menu = menu
+        
+        // Add and customize button
         if let button = statusItem.button {
             button.image = NSImage(systemSymbolName: "staroflife.fill", accessibilityDescription: nil)
-            button.action = #selector(statusIconTapped(sender:))
-            button.target = self
+            //button.action = #selector(showAppTapped(sender:))
+            //button.target = self
         }
     }
     
     @objc
-    func statusIconTapped(sender: AnyObject)
+    func showAppTapped(sender: AnyObject)
     {
         Singleton.shared.togglePrompt()
+    }
+        
+    @objc
+    func menuItemQuitTapped(sender: AnyObject)
+    {
+        NSApplication.shared.terminate(nil)
     }
 }

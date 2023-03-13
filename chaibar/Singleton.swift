@@ -178,7 +178,7 @@ class Singleton: NSObject, NSWindowDelegate {
         task.resume()
     }
     ///3. Retrieve Alerst (could be consolidated eventually)
-    func serverRestAIRetrieve(forPrompt prompt: String,  callback: @escaping (_ success : Bool, _ promptResponse: String?, _ imageURLS: [String]?)->())
+    func serverRestAIRetrieve(forPrompt prompt: String,  callback: @escaping (_ success : Bool, _ promptResponse: String?, _ images: [NSImage]?)->())
     {
         DebugHelper.log("Sending AI Request to server for prompt=\(prompt)...")
         
@@ -213,8 +213,23 @@ class Singleton: NSObject, NSWindowDelegate {
                 DebugHelper.logError("REST ERROR: \(error)")
             }else if parsedResponse != nil {
                 //DebugHelper.log("REST AI RESPONSE= \(parsedResponse!.response)")
-                //Ignore if added or not
-                callback(true, parsedResponse!.response, parsedResponse!.imageURLS)
+                //Parse and add images
+                var b64images: [NSImage]?
+                if let givenImagesArray = parsedResponse!.images {
+                    for imgb64 in givenImagesArray {
+                        if let encodedImage = imgb64 as? String,
+                           let imageData = Data(base64Encoded: encodedImage, options: .ignoreUnknownCharacters),
+                           let image = NSImage(data: imageData) {
+                            print(image.size)
+                            if b64images == nil {
+                                b64images = [NSImage]()
+                            }
+                            b64images!.append(image)
+                        }
+                    }
+                }
+                
+                callback(true, parsedResponse!.response, b64images)
                 return
             }
             

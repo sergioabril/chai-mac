@@ -13,7 +13,8 @@ struct ContentView: View {
     @State var searchText = ""
     @FocusState private var searchBarIsFocused : Bool
     
-    @State var promptResponse : String? = "[IMG=https://oaidalleapiprodscus.blob.core.windows.net/private/org-ELmMrlomc25KptUwcJ7rPSgB/user-rGoUSAYK7nytyZxDmQsNXkUW/img-bAXocI2W6I8DhGMvSY7mjWsm.png?st=2023-03-12T21%3A13%3A47Z&se=2023-03-12T23%3A13%3A47Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2023-03-12T10%3A04%3A25Z&ske=2023-03-13T10%3A04%3A25Z&sks=b&skv=2021-08-06&sig=2fq//dbiH5y8aQg74MlYhSvUD4QlR4eTBnygTsA8NJM%3D]"
+    @State var promptResponse : String?
+    @State var promptResponseImages: [NSImage]?// = [NSImage(named: "dummyImage")!]
     
     @State private var scrollViewContentSize: CGSize = .zero
     
@@ -61,11 +62,15 @@ struct ContentView: View {
                         
                         isBusy = true
                         
-                        Singleton.shared.serverRestAIRetrieve(forPrompt: searchText) { success, promptResponse, imageURLS  in
+                        Singleton.shared.serverRestAIRetrieve(forPrompt: searchText) { success, promptResponse, images  in
                             
-                            DebugHelper.log("Response AI: Success=\(success) - response=\(promptResponse) imgURLS=\(imageURLS)")
+                            DebugHelper.log("Response AI: Success=\(success) - response=\(promptResponse) imgs=\(images?.count)")
                             DebugHelper.log("Response AI: Response=\(promptResponse)")
                             
+                            //Clean images
+                            promptResponseImages = nil
+                            
+                            //Parse and add prompt response
                             if let promptResponse = promptResponse {
                                 DebugHelper.log("Response AI: \(promptResponse)")
                                 //Stop animation
@@ -75,17 +80,16 @@ struct ContentView: View {
                                 if let range = cleanPrompt.range(of:"\n\n") {
                                     cleanPrompt = cleanPrompt.replacingCharacters(in: range, with:"")
                                 }
+    
                                 //Set prompt
                                 withAnimation{
                                     self.promptResponse = cleanPrompt
                                 }
-                            }else if let imageURLS = imageURLS, imageURLS.count > 0 {
-                                DebugHelper.log("Response AI img: \(imageURLS[0])")
-                                //Stop animation
+                            }else if images != nil {
+                                //Nothing, images will show
                                 isBusy = false
-                                //Set prompt
                                 withAnimation{
-                                    self.promptResponse = "[IMG=\(imageURLS[0])]"
+                                    self.promptResponseImages = images
                                 }
                             }else{
                                 isBusy = false
@@ -102,6 +106,7 @@ struct ContentView: View {
                     .onChange(of: self.searchText) { newValue in
                         if newValue.isEmpty {
                             promptResponse = nil
+                            promptResponseImages = nil
                         }
                     }
 
@@ -122,12 +127,21 @@ struct ContentView: View {
             HStack{
                 //Hack for scroll to fit content: https://developer.apple.com/forums/thread/671690
                 ScrollView(.vertical, showsIndicators: scrollViewContentSize.height > 500 ? true : false) {
-                    if promptResponse != nil && promptResponse!.contains("[IMG=")
+                    if promptResponseImages != nil && !promptResponseImages!.isEmpty
                     {
+                        /*
                         AsyncImage(url: URL(string: promptResponse!.replacingOccurrences(of: "[IMG=", with: "").replacingOccurrences(of: "]", with: "")))
                         { image in image.resizable() } placeholder: { Color.gray } .frame(width: 340, height: 340) .clipShape(RoundedRectangle(cornerRadius: 25))
-                            .frame(width: 400, height: 400, alignment: .center)
-                            .padding(.vertical, 00) //to compensate the negative spacing of the parent VSTACK
+                         */
+                        
+                        
+                        Spacer()
+                            .frame(height: 20)
+                        Image(nsImage: promptResponseImages![0])
+                            .resizable()
+                            .frame(width: 380, height: 380)
+                            //.padding(.vertical, 30) //to compensate the negative spacing of the parent VSTACK
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
                             //Animate if shown when you are searching a new thing
                             .opacity(isBusy ? 0.5 : 1)
                             .animation(isBusy
@@ -137,25 +151,34 @@ struct ContentView: View {
                             .contextMenu {
                                     Button {
                                         // save my code
+                                        
                                         let savePanel = NSSavePanel()
+
                                         savePanel.title = "Save your image"
                                         savePanel.message = "Choose a place to save this image"
                                         savePanel.prompt = "Save now"
                                         let response = savePanel.runModal()
+                                    
+                                        
                                         
                                     } label: {
-                                        Label("Save to Desktop", systemImage: "square.and.arrow.down")
+                                        Label("Save Image", systemImage: "square.and.arrow.down")
                                     }
                                 }
                             //Resize scroll
                             .background(
                                 GeometryReader { geo -> Color in
                                     DispatchQueue.main.async {
-                                        scrollViewContentSize = geo.size
+                                        var size = geo.size
+                                        size.height += 40 //spacers top/bottom
+                                        scrollViewContentSize = size
                                     }
                                     return Color.clear
                                 }
                             )
+                        
+                        Spacer()
+                            .frame(height: 20)
                     }else{
                         Text(promptResponse ?? "")
                             .font(Font.system(size: 15, design: .rounded))
@@ -184,13 +207,13 @@ struct ContentView: View {
                 )
             }
             .frame(maxWidth: .infinity)
-            .frame(minHeight: promptResponse != nil ? 100 : 0)
+            .frame(minHeight: (promptResponse != nil || promptResponseImages != nil) ? 100 : 0)
             //.background(RoundedCorners(color: .black.opacity(0.5), tl: 0, tr: 0, bl: 20, br: 20))
             .background(VisualEffectView(material: NSVisualEffectView.Material.popover, blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
             .clipShape(RoundedCornersShape(tl: 0, tr: 0, bl: 20, br: 20))
             .padding(.horizontal, 10)
             .zIndex(-1) //below the box
-            .opacity(promptResponse != nil ? 1 : 0)
+            .opacity((promptResponse != nil || promptResponseImages != nil) ? 1 : 0)
 
             
             //PUSH ALL UP
@@ -211,7 +234,7 @@ struct MyTextFieldStyle: TextFieldStyle {
         .padding(10)
         .padding(.leading, 40)
         .frame(maxWidth: .infinity)
-        .foregroundColor(.yellow) //Text color
+        .foregroundColor(.white) //Text color
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .foregroundColor(Color.clear)

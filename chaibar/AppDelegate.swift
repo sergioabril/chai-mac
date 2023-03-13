@@ -28,6 +28,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         HotkeySolution.registerOpenHotkey(_callOnTrigger: {
             Singleton.shared.togglePrompt()
         })
+        
+        // Register ESC key
+        //HotkeySolution.registerEscHotkey(_callOnTrigger: {
+            //TODO: clean text OR hide bar if no text
+        //})
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {

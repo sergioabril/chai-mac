@@ -38,5 +38,5 @@ class RestAIRetrieveResponse : Decodable{
     var prompt: String?                                         //Original prompt
     var response: String?                                       //AI Response
     
-    var imageURLS: [String]?                                    //AI Images response
+    var images: [String]?                                       //AI Images response, an array of JSON b64 images
 }
