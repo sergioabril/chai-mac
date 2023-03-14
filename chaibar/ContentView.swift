@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Highlightr
 
 struct ContentView: View {
     
     
-    @State var searchText = ""
+    @ObservedObject var currentState: CurrentState
+    
     @FocusState private var searchBarIsFocused : Bool
     
     @State var promptResponse : String?
@@ -31,7 +33,7 @@ struct ContentView: View {
                     Spacer()
                         .frame(width: 15)
                     ZStack{
-                        Image(systemName: "staroflife.fill")
+                        Image("barIcon")
                             .resizable()
                             .frame(width: 24, height: 24)
                             .aspectRatio(contentMode: .fill)
@@ -47,22 +49,22 @@ struct ContentView: View {
                 }
                
                 //SEARCH BAR
-                TextField("", text: $searchText)
-                    .placeholder(when: searchText.isEmpty) {
+                TextField("", text: $currentState.promptText)
+                    .placeholder(when: currentState.promptText.isEmpty) {
                         /// Custom placeholder modifier instead of txfield default
                         /// So we can customize it
                         Text("Type anything...")
                             .foregroundColor(.gray)
-                            .padding(.leading, 50)
+                            .padding(.leading, 55)
                             .font(Font.system(size: 25, design: .rounded))
                     }
                     .focused($searchBarIsFocused)
                     .onSubmit {
-                        print("On Submbmit \(searchText)")
+                        print("On Submbmit \(currentState.promptText)")
                         
                         isBusy = true
                         
-                        Singleton.shared.serverRestAIRetrieve(forPrompt: searchText) { success, promptResponse, images  in
+                        Singleton.shared.serverRestAIRetrieve(forPrompt: currentState.promptText) { success, promptResponse, images  in
                             
                             DebugHelper.log("Response AI: Success=\(success) - response=\(promptResponse) imgs=\(images?.count)")
                             DebugHelper.log("Response AI: Response=\(promptResponse)")
@@ -94,7 +96,7 @@ struct ContentView: View {
                             }else{
                                 isBusy = false
                                 withAnimation{
-                                    self.promptResponse = "error - tODO: show error icon and view"
+                                    self.promptResponse = "⚠️ Error reaching servers"
                                 }
                             }
                         }
@@ -103,7 +105,7 @@ struct ContentView: View {
                     .disableAutocorrection(true)
                     .textFieldStyle(MyTextFieldStyle())
                     .font(Font.system(size: 28, design: .rounded))
-                    .onChange(of: self.searchText) { newValue in
+                    .onChange(of: currentState.promptText) { newValue in
                         if newValue.isEmpty {
                             promptResponse = nil
                             promptResponseImages = nil
@@ -180,17 +182,7 @@ struct ContentView: View {
                         Spacer()
                             .frame(height: 20)
                     }else{
-                        Text(promptResponse ?? "")
-                            .font(Font.system(size: 15, design: .rounded))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 50)
-                            .padding(.vertical, 30) //to compensate the negative spacing of the parent VSTACK
-                            //Animate if shown when you are searching a new thing
-                            .opacity(isBusy ? 0.5 : 1)
-                            .animation(isBusy
-                                       ? .linear(duration: 0.5).repeatForever(autoreverses: true)
-                                       : .none, value: isBusy)
-
+                        parseResponse(text: promptResponse ?? "")
                             .background(
                                 GeometryReader { geo -> Color in
                                     DispatchQueue.main.async {
@@ -223,6 +215,38 @@ struct ContentView: View {
         .frame(height: 500)
         .padding(0)
     }
+    
+    
+    /// Method to parse syntaxis for ChatGPT response
+    func parseResponse(text: String) -> some View {
+        
+        let highlightr = Highlightr()
+        highlightr!.setTheme(to: "paraiso-dark")
+        let code = "let a = 1"
+        // You can omit the second parameter to use automatic language detection.
+        let highlightedCode = highlightr!.highlight(code, as: "swift")
+        
+        // Convert NSAttributedString to Attributed string to use on SwiftUI
+        let a = try AttributedString(highlightedCode!)
+        
+        return Group {
+            Text(a)
+            +
+            Text(promptResponse ?? "")
+                .font(Font.system(size: 15, design: .rounded))
+                
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 50)
+        .padding(.vertical, 30) //to compensate the negative spacing of the parent VSTACK
+        //Animate if shown when you are searching a new thing
+        .opacity(isBusy ? 0.5 : 1)
+        .animation(isBusy
+                   ? .linear(duration: 0.5).repeatForever(autoreverses: true)
+                   : .none, value: isBusy)
+    }
+    
+
 }
 
 // MARK: TextField Search Style
@@ -232,7 +256,7 @@ struct MyTextFieldStyle: TextFieldStyle {
         configuration
         .textFieldStyle(.plain) //Important, so we dont get background not rounded focus blueish tint
         .padding(10)
-        .padding(.leading, 40)
+        .padding(.leading, 45)
         .frame(maxWidth: .infinity)
         .foregroundColor(.white) //Text color
         .background(
@@ -244,8 +268,37 @@ struct MyTextFieldStyle: TextFieldStyle {
 }
 
 
+// MARK: CODEBLOCK
+struct CodeBlock: View {
+    @State var codeTextBlock: String
+    var body : some View {
+        VStack{
+            /*
+            let highlightr = Highlightr()
+            highlightr!.setTheme(to: "paraiso-dark")
+            let code = "let a = 1"
+            // You can omit the second parameter to use automatic language detection.
+            let highlightedCode = highlightr!.highlight(code, as: "swift")
+            
+            // Convert NSAttributedString to Attributed string to use on SwiftUI
+            let a = try AttributedString(highlightedCode!)
+           
+            Text(a)*/
+            
+            Text(codeTextBlock)
+        }
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Group{
+            ContentView(currentState: Singleton.shared.currentState)
+                .previewDisplayName("Main")
+            
+            CodeBlock(codeText: "let swift = 1")
+                .previewDisplayName("Code Block")
+        }
+        
     }
 }

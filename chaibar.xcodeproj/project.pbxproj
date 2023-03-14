@@ -20,6 +20,8 @@
 		498AB2A829BCA98E00104E7D /* CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A729BCA98E00104E7D /* CornerRadius.swift */; };
 		498AB2AA29BCB85600104E7D /* HotkeySolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A929BCB85600104E7D /* HotkeySolution.swift */; };
 		498AB2AE29BE74A600104E7D /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2AD29BE74A600104E7D /* VisualEffectView.swift */; };
+		49B4C1EC29C07B5C00A15E38 /* CurrentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B4C1EB29C07B5C00A15E38 /* CurrentState.swift */; };
+		49B4C1EF29C07FDF00A15E38 /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = 49B4C1EE29C07FDF00A15E38 /* Highlightr */; };
 		49C637FB29AF6ABD00DB9A4B /* chaibarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C637FA29AF6ABD00DB9A4B /* chaibarApp.swift */; };
 		49C637FD29AF6ABD00DB9A4B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C637FC29AF6ABD00DB9A4B /* ContentView.swift */; };
 		49C637FF29AF6ABF00DB9A4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C637FE29AF6ABF00DB9A4B /* Assets.xcassets */; };
@@ -65,6 +67,7 @@
 		498AB2A729BCA98E00104E7D /* CornerRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadius.swift; sourceTree = "<group>"; };
 		498AB2A929BCB85600104E7D /* HotkeySolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeySolution.swift; sourceTree = "<group>"; };
 		498AB2AD29BE74A600104E7D /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
+		49B4C1EB29C07B5C00A15E38 /* CurrentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentState.swift; sourceTree = "<group>"; };
 		49C637F729AF6ABD00DB9A4B /* chaibar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chaibar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C637FA29AF6ABD00DB9A4B /* chaibarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chaibarApp.swift; sourceTree = "<group>"; };
 		49C637FC29AF6ABD00DB9A4B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -87,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49B4C1EF29C07FDF00A15E38 /* Highlightr in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +158,14 @@
 			path = UIKitRepresentables;
 			sourceTree = "<group>";
 		};
+		49B4C1EA29C07B4F00A15E38 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				49B4C1EB29C07B5C00A15E38 /* CurrentState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
 		49C637EE29AF6ABD00DB9A4B = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +193,7 @@
 				498AB29D29BC883500104E7D /* Helpers */,
 				498AB28F29BC87B800104E7D /* DataModels */,
 				498AB2AB29BE73DF00104E7D /* Views */,
+				49B4C1EA29C07B4F00A15E38 /* State */,
 				49C6382929AF74C800DB9A4B /* Extensions */,
 				49C637FA29AF6ABD00DB9A4B /* chaibarApp.swift */,
 				49C6382729AF6B4D00DB9A4B /* AppDelegate.swift */,
@@ -246,6 +259,9 @@
 			dependencies = (
 			);
 			name = chaibar;
+			packageProductDependencies = (
+				49B4C1EE29C07FDF00A15E38 /* Highlightr */,
+			);
 			productName = chaibar;
 			productReference = 49C637F729AF6ABD00DB9A4B /* chaibar.app */;
 			productType = "com.apple.product-type.application";
@@ -318,6 +334,9 @@
 				Base,
 			);
 			mainGroup = 49C637EE29AF6ABD00DB9A4B;
+			packageReferences = (
+				49B4C1ED29C07FDF00A15E38 /* XCRemoteSwiftPackageReference "Highlightr" */,
+			);
 			productRefGroup = 49C637F829AF6ABD00DB9A4B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -365,6 +384,7 @@
 				49C6382829AF6B4D00DB9A4B /* AppDelegate.swift in Sources */,
 				49C6382D29AF964200DB9A4B /* StatusBarController.swift in Sources */,
 				498AB29829BC881A00104E7D /* RestPurchasesReceiptValidation.swift in Sources */,
+				49B4C1EC29C07B5C00A15E38 /* CurrentState.swift in Sources */,
 				498AB2A829BCA98E00104E7D /* CornerRadius.swift in Sources */,
 				498AB29929BC881A00104E7D /* RestUserPushRegister.swift in Sources */,
 				49C6382B29AF74E800DB9A4B /* Placeholder.swift in Sources */,
@@ -696,6 +716,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		49B4C1ED29C07FDF00A15E38 /* XCRemoteSwiftPackageReference "Highlightr" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raspu/Highlightr";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		49B4C1EE29C07FDF00A15E38 /* Highlightr */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49B4C1ED29C07FDF00A15E38 /* XCRemoteSwiftPackageReference "Highlightr" */;
+			productName = Highlightr;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 49C637EF29AF6ABD00DB9A4B /* Project object */;
 }

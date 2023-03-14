@@ -41,7 +41,8 @@ class StatusBarController {
         
         // Add and customize button
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "staroflife.fill", accessibilityDescription: nil)
+            button.image = NSImage(named: "statusBarIcon")
+            button.image?.size = NSSize(width: 16, height: 16) //or it would be to big for the status bar
             //button.action = #selector(showAppTapped(sender:))
             //button.target = self
         }

@@ -7,6 +7,7 @@
 
 import Foundation
 import AppKit
+import Carbon.HIToolbox //to detect escape
 
 // MARK: - Floating Panel
 
@@ -58,6 +59,27 @@ class FloatingBar: NSPanel {
 
     override var canBecomeMain: Bool {
         return true
+    }
+    
+    // Important to listen for ESC keys
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        switch Int(event.keyCode) {
+        case kVK_Escape:
+            //print("Esc pressed")
+            //Clear text or hide
+            if Singleton.shared.currentState.promptText.isEmpty {
+                // Close window
+                Singleton.shared.togglePrompt(closeIfOpen: true)
+            }else{
+                // Clear
+                Singleton.shared.currentState.promptText = ""
+            }
+            //Abort by returning true
+            return true
+        default:
+            //Deferr event to next handler (textfield)
+            return super.performKeyEquivalent(with: event)
+        }
     }
 }
 

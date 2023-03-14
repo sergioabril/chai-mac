@@ -30,6 +30,10 @@ class Singleton: NSObject, NSWindowDelegate {
     /// construction calls with the `new` operator.
     private override init() {}
     
+    // MARK: Pointers
+    var currentState = CurrentState()
+
+    
     // MARK: variables
     var promptPanel: FloatingBar?
     
@@ -54,7 +58,7 @@ class Singleton: NSObject, NSWindowDelegate {
     private func createFloatingPanel() {
         // Create the SwiftUI view that provides the window contents.
         // I've opted to ignore top safe area as well, since we're hiding the traffic icons
-        let contentView = ContentView()
+        let contentView = ContentView(currentState: currentState)
           .edgesIgnoringSafeArea(.top)
 
         // Create the window and set the content view.

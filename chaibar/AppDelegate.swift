@@ -21,18 +21,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // of its windows.
         NSApp.setActivationPolicy(.accessory)
         
+        // Close main app window
+        if let window = NSApplication.shared.windows.first {
+            window.close()
+        }
+        
+        
         // Create status bar
         statusBar = StatusBarController()
-                
+        
         // Register Hotkey to open window
         HotkeySolution.registerOpenHotkey(_callOnTrigger: {
             Singleton.shared.togglePrompt()
         })
         
-        // Register ESC key
-        //HotkeySolution.registerEscHotkey(_callOnTrigger: {
-            //TODO: clean text OR hide bar if no text
-        //})
+
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
