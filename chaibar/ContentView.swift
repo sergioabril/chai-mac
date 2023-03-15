@@ -15,7 +15,8 @@ struct ContentView: View {
     
     @FocusState private var searchBarIsFocused : Bool
     
-    @State var promptResponse : String?
+    @State var promptResponse : String? = "Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
+    
     @State var promptResponseImages: [NSImage]?// = [NSImage(named: "dummyImage")!]
     
     @State private var scrollViewContentSize: CGSize = .zero
@@ -220,30 +221,42 @@ struct ContentView: View {
     /// Method to parse syntaxis for ChatGPT response
     func parseResponse(text: String) -> some View {
         
-        let highlightr = Highlightr()
-        highlightr!.setTheme(to: "paraiso-dark")
-        let code = "let a = 1"
-        // You can omit the second parameter to use automatic language detection.
-        let highlightedCode = highlightr!.highlight(code, as: "swift")
+        /// Separate by code blocks
+        var responseComponents = text.components(separatedBy: "```");
         
-        // Convert NSAttributedString to Attributed string to use on SwiftUI
-        let a = try AttributedString(highlightedCode!)
-        
-        return Group {
-            Text(a)
-            +
-            Text(promptResponse ?? "")
-                .font(Font.system(size: 15, design: .rounded))
-                
+        return VStack {
+            ForEach(Array(responseComponents.enumerated()), id:\.element){ ind, comp in
+                if ind > 0 && ind % 2 != 0 {
+                    ///It's code
+                    CodeBlock(codeTextBlock: "```\(comp)```")
+                }else{
+                    //Regular
+                    //BUT: check if there is inline text
+                    var inlineCodeComponents = comp.components(separatedBy: "`");
+                    if inlineCodeComponents.count > 0 {
+                        //TODO: handle inliners
+                        Text(comp)
+                            .font(Font.system(size: 15, design: .rounded))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }else{
+                        //PLAIN OLD, JUST TEXT
+                        Text(comp)
+                            .font(Font.system(size: 15, design: .rounded))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                   
+                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 50)
-        .padding(.vertical, 30) //to compensate the negative spacing of the parent VSTACK
+        .padding(.horizontal, 20)
+        .padding(.vertical, 30)
         //Animate if shown when you are searching a new thing
         .opacity(isBusy ? 0.5 : 1)
         .animation(isBusy
                    ? .linear(duration: 0.5).repeatForever(autoreverses: true)
                    : .none, value: isBusy)
+
     }
     
 
@@ -272,21 +285,44 @@ struct MyTextFieldStyle: TextFieldStyle {
 struct CodeBlock: View {
     @State var codeTextBlock: String
     var body : some View {
-        VStack{
-            /*
-            let highlightr = Highlightr()
-            highlightr!.setTheme(to: "paraiso-dark")
-            let code = "let a = 1"
-            // You can omit the second parameter to use automatic language detection.
-            let highlightedCode = highlightr!.highlight(code, as: "swift")
-            
-            // Convert NSAttributedString to Attributed string to use on SwiftUI
-            let a = try AttributedString(highlightedCode!)
-           
-            Text(a)*/
-            
-            Text(codeTextBlock)
+        self.parseCodeBlock(rawText: codeTextBlock)
+    }
+    
+    
+    /// Method to parse syntaxis for ChatGPT response
+    func parseCodeBlock(rawText: String) -> some View {
+        /// Split and get both language and code
+        let splitCodeblock = rawText.components(separatedBy: "```")
+        var code = splitCodeblock[1]
+        let language: String? = code.components(separatedBy: "\n")[0]
+        if language != nil && !language!.isEmpty {
+            /// Remove language from code. only first ocurrence
+            if let range = language!.range(of:language!) {
+                code = code.replacingCharacters(in: range, with:"")
+            }
         }
+        /// Prepare highlight
+        let highlightr = Highlightr()
+        highlightr!.setTheme(to: "paraiso-dark")
+        // You can omit the second parameter to use automatic language detection.
+        var highlightedCode = highlightr!.highlight(String(code))
+        if language != nil && !language!.isEmpty{
+            //highlightedCode = highlightr!.highlight(String(code), as: language!)
+            //If malformed or unknown lang, then it fails, so better auto?
+        }
+        
+        // Convert NSAttributedString to Attributed string to use on SwiftUI
+        let a = try AttributedString(highlightedCode!)
+        
+        return VStack {
+            Text(a)
+                .lineSpacing(10)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10) //to compensate the negative spacing of the
+        .background(Color.white.opacity(0.05))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
 
@@ -296,7 +332,7 @@ struct ContentView_Previews: PreviewProvider {
             ContentView(currentState: Singleton.shared.currentState)
                 .previewDisplayName("Main")
             
-            CodeBlock(codeText: "let swift = 1")
+            CodeBlock(codeTextBlock: "```\nlet Swift = 1\n```")
                 .previewDisplayName("Code Block")
         }
         
