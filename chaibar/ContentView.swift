@@ -15,7 +15,7 @@ struct ContentView: View {
     
     @FocusState private var searchBarIsFocused : Bool
     
-    @State var promptResponse : String? = "Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
+    @State var promptResponse : String? = "Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift como `i=1` y `1.0`, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
     
     @State var promptResponseImages: [NSImage]?// = [NSImage(named: "dummyImage")!]
     
@@ -230,14 +230,30 @@ struct ContentView: View {
                     ///It's code
                     CodeBlock(codeTextBlock: "```\(comp)```")
                 }else{
-                    //Regular
-                    //BUT: check if there is inline text
+                    //Regular with no CODE BLOCK
+                    //BUT: check if there is inline text code
                     var inlineCodeComponents = comp.components(separatedBy: "`");
                     if inlineCodeComponents.count > 0 {
-                        //TODO: handle inliners
-                        Text(comp)
-                            .font(Font.system(size: 15, design: .rounded))
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        //Combine texts: regular and possible inline codes
+                        //Reduce combines with next fragment
+                        //use this to get index: https://stackoverflow.com/questions/28012205/map-or-reduce-with-index-in-swift
+                        inlineCodeComponents.enumerated().reduce(Text("")) { (accumulate, current) in
+                            //return accumulate + current.0 * current.1
+                            //                          ^           ^
+                            //                        index      element
+                            
+                            if current.0 > 0 && current.0 % 2 != 0 {
+                                //Parse inline code
+                                return accumulate + parseCodeInline(rawText: "`\(current.1)`")
+                            }else{
+                                //Regular text with no inline code
+                                return accumulate + Text(current.1)
+                            }
+                            
+                        }
+                        .font(Font.system(size: 15, design: .rounded))
+                        .frame(maxWidth: .infinity, alignment: .leading) //applies to the inlineCodeComponents reduced combined Text
+                        
                     }else{
                         //PLAIN OLD, JUST TEXT
                         Text(comp)
@@ -249,7 +265,7 @@ struct ContentView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 20)
+        .padding(.horizontal, 30)
         .padding(.vertical, 30)
         //Animate if shown when you are searching a new thing
         .opacity(isBusy ? 0.5 : 1)
@@ -259,7 +275,40 @@ struct ContentView: View {
 
     }
     
+    /// Method to parse syntaxis for ChatGPT response
+    func parseCodeInline(rawText: String) -> Text {
+        /// Split and get both language and code
+        let splitCodeblock = rawText.components(separatedBy: "`")
+        if splitCodeblock.count < 2 {
+            //No code to parse
+            return Text(rawText)
+        }
+        
+        //Parse
+        var code = splitCodeblock[1]
+        
+        //If empty, also dont return
+        if code.isEmpty {
+            return Text(rawText)
+        }
 
+        /// Prepare highlight
+        let highlightr = Highlightr()
+        highlightr!.setTheme(to: "paraiso-dark")
+        // You can omit the second parameter to use automatic language detection.
+        let highlightedCode = highlightr!.highlight(String(code))
+        
+        // Convert NSAttributedString to Attributed string to use on SwiftUI
+        do {
+            let a = try AttributedString(highlightedCode!)
+            return Text(a)
+        }catch{
+            DebugHelper.logError("Error parsing inline code. Return regular. ERROR=\(error)")
+            return Text(rawText)
+        }
+        
+
+    }
 }
 
 // MARK: TextField Search Style
@@ -283,7 +332,10 @@ struct MyTextFieldStyle: TextFieldStyle {
 
 // MARK: CODEBLOCK
 struct CodeBlock: View {
+    
     @State var codeTextBlock: String
+    @State var pressedCopy: Bool = false
+    
     var body : some View {
         self.parseCodeBlock(rawText: codeTextBlock)
     }
@@ -317,14 +369,42 @@ struct CodeBlock: View {
         return VStack {
             Text(a)
                 .lineSpacing(10)
+                .scaleEffect(pressedCopy ? 1.05 : 1)
+                .animation(pressedCopy
+                           ? .default.speed(10)
+                           : .spring()
+                           , value: pressedCopy)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(.horizontal, 20)
         .padding(.vertical, 10) //to compensate the negative spacing of the
         .background(Color.white.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 10))
+        .overlay(
+            Button(action: {
+                //Copy text
+                let pasteboard = NSPasteboard.general
+                pasteboard.declareTypes([.string], owner: nil)
+                pasteboard.setString(code, forType: .string)
+                //Animate
+                pressedCopy = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    // your code here
+                    pressedCopy = false
+                }
+                
+            }, label: {
+                    Image(systemName: "doc.on.doc")
+                })
+                .offset(
+                    x: -10, y: 10
+                )
+            ,
+            alignment: .topTrailing
+        )
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -332,8 +412,11 @@ struct ContentView_Previews: PreviewProvider {
             ContentView(currentState: Singleton.shared.currentState)
                 .previewDisplayName("Main")
             
-            CodeBlock(codeTextBlock: "```\nlet Swift = 1\n```")
+            CodeBlock(codeTextBlock: "```\nlet Swift = 1\n``` pèro hay itras `cosas` que lo ")
                 .previewDisplayName("Code Block")
+            
+            //CodeInline(codeText: "`let Swift = 1`")
+               // .previewDisplayName("Code Inline")
         }
         
     }
