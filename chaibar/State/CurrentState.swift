@@ -8,5 +8,9 @@
 import Foundation
 
 class CurrentState : ObservableObject {
+    /// LIVE
     @Published var promptText : String = ""
+    
+    /// CACHE
+    var chatGPTHistory = [ChatGPTMessage]()
 }

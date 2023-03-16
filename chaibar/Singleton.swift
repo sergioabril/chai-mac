@@ -91,6 +91,9 @@ class Singleton: NSObject, NSWindowDelegate {
                 panel.close()
             }
             
+            //Clean prompt & history
+            currentState.promptText = ""
+            currentState.chatGPTHistory = [ChatGPTMessage]()
         }
     }
     
@@ -186,6 +189,7 @@ class Singleton: NSObject, NSWindowDelegate {
     {
         DebugHelper.log("Sending AI Request to server for prompt=\(prompt)...")
         
+       
         
         
         // Some vars
@@ -198,10 +202,21 @@ class Singleton: NSObject, NSWindowDelegate {
         bodyRequest.uniqueIdentifier = "DEBUGDEMO" //getUserData().uniqueIdentifier
         bodyRequest.serverToken = "none" //CurrentState.serverToken
         bodyRequest.appBuildNumber = build
+        bodyRequest.engine = .chatgpt
         bodyRequest.prompt = prompt
+        bodyRequest.chatHistory = Singleton.shared.currentState.chatGPTHistory
         bodyRequest.ts = "\(self.getCurrentTimesTamp())"
         //let control = RestControlGenerator.getControlForRestAlertRetrieveRequest(withBody: bodyRequest, version: 1)
         //bodyRequest.control = control;
+        
+        
+        // Add to history if chat GPT
+        if true {
+            var newPromptChatGPT = ChatGPTMessage()
+            newPromptChatGPT.role = .user
+            newPromptChatGPT.content = prompt
+            Singleton.shared.currentState.chatGPTHistory.append(newPromptChatGPT)
+        }
         
         //Evaluate tags
         if prompt.contains("/image")

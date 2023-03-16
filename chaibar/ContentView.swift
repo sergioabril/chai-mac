@@ -15,7 +15,7 @@ struct ContentView: View {
     
     @FocusState private var searchBarIsFocused : Bool
     
-    @State var promptResponse : String? = "Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift como `i=1` y `1.0`, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
+    @State var promptResponse : String? //= "Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift como `i=1` y `1.0`, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
     
     @State var promptResponseImages: [NSImage]?// = [NSImage(named: "dummyImage")!]
     
@@ -178,6 +178,29 @@ struct ContentView: View {
                                     }
                                     return Color.clear
                                 }
+                            )
+                            .overlay(
+                                Button(action: {
+                                    //Copy text
+                                    let pasteboard = NSPasteboard.general
+                                    //pasteboard.declareTypes([.string], owner: nil)
+                                    pasteboard.clearContents()
+                                    pasteboard.writeObjects([promptResponseImages![0]])
+                                    //Animate
+                                    //pressedCopy = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        // your code here
+                                        //pressedCopy = false
+                                    }
+                                    
+                                }, label: {
+                                        Image(systemName: "doc.on.doc")
+                                    })
+                                    .offset(
+                                        x: -10, y: 10
+                                    )
+                                ,
+                                alignment: .topTrailing
                             )
                         
                         Spacer()

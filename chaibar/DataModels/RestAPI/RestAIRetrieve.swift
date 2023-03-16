@@ -8,6 +8,10 @@
 import Foundation
 import CoreLocation
 
+enum AIEngine : String, Codable {
+    case chatgpt
+}
+
 /// Request body to send an alert
 class RestAIRetrieveRequest : Encodable{
     //Identification (user UUID)
@@ -18,8 +22,9 @@ class RestAIRetrieveRequest : Encodable{
     var appBuildNumber: String?
 
     //Request AI specifics
-    var prompt: String?
-    var chatHistory: [String]? // 4 sized array of [latMin, latMax, longMin, longMax] that we want to retrieve alerts for
+    var engine: AIEngine? = .chatgpt
+    var prompt: String?                                 //as plain text, not chatGPTMessage?
+    var chatHistory: [ChatGPTMessage]?                  //not including current prompt
     
     //Tags
     var tags: [String]?
