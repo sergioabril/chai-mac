@@ -16,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
       
+        
         // The application does not appear in the Dock and does not have a menu
         // bar, but it may be activated programmatically or by clicking on one
         // of its windows.

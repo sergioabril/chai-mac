@@ -13,6 +13,13 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
+			<key>backend.chaibar.ai</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>macsergio.local</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>

@@ -15,153 +15,163 @@ struct ContentView: View {
     
     @FocusState private var searchBarIsFocused : Bool
     
-    @State var promptResponse : String? //= "Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift como `i=1` y `1.0`, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
+    /// Prompts
+    @State var promptResponse : String? //= "Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento " //"Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift como `i=1` y `1.0`, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
     
     @State var promptResponseImages: [NSImage]?// = [NSImage(named: "dummyImage")!]
     
-    @State private var scrollViewContentSize: CGSize = .zero
     
+    /// Inner states
+    @State private var scrollViewContentSize: CGSize = .zero
     @State var isBusy: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
                     
-            //SEARCHABLE PACK
-            ZStack{
+            // LOGIN
+            if currentState.serverToken == nil {
+                LoginView(currentState: self.currentState)
+            }else{
                 
-                //LEFT ICON
-                HStack{
-                    Spacer()
-                        .frame(width: 15)
-                    ZStack{
-                        Image("barIcon")
-                            .resizable()
-                            .frame(width: 24, height: 24)
-                            .aspectRatio(contentMode: .fill)
-                            .foregroundColor(.white)
+                
+                //SEARCHABLE PACK
+                ZStack{
+                    
+                    //LEFT ICON
+                    HStack{
+                        Spacer()
+                            .frame(width: 15)
+                        ZStack{
+                            Image("barIcon")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .aspectRatio(contentMode: .fill)
+                                .foregroundColor(.white)
+                        }
+                        .frame(width: 30, height: 30)
+                        .rotationEffect(.degrees(isBusy ? 360 : 0), anchor: .center)
+                        .animation(isBusy
+                                   ? .linear(duration: 4).repeatForever(autoreverses: true)
+                                   : .linear,
+                                   value: isBusy)
+                        Spacer()
                     }
-                    .frame(width: 30, height: 30)
-                    .rotationEffect(.degrees(isBusy ? 360 : 0), anchor: .center)
-                    .animation(isBusy
-                               ? .linear(duration: 4).repeatForever(autoreverses: true)
-                               : .linear,
-                               value: isBusy)
-                    Spacer()
-                }
-               
-                //SEARCH BAR
-                TextField("", text: $currentState.promptText)
-                    .placeholder(when: currentState.promptText.isEmpty) {
-                        /// Custom placeholder modifier instead of txfield default
-                        /// So we can customize it
-                        Text("Type anything...")
-                            .foregroundColor(.gray)
-                            .padding(.leading, 55)
-                            .font(Font.system(size: 25, design: .rounded))
-                    }
-                    .focused($searchBarIsFocused)
-                    .onSubmit {
-                        print("On Submbmit \(currentState.promptText)")
-                        
-                        isBusy = true
-                        
-                        Singleton.shared.serverRestAIRetrieve(forPrompt: currentState.promptText) { success, promptResponse, images  in
+                    
+                    //SEARCH BAR
+                    TextField("", text: $currentState.promptText)
+                        .placeholder(when: currentState.promptText.isEmpty) {
+                            /// Custom placeholder modifier instead of txfield default
+                            /// So we can customize it
+                            Text("Type anything...")
+                                .foregroundColor(.gray)
+                                .padding(.leading, 55)
+                                .font(Font.system(size: 25, design: .rounded))
+                        }
+                        .focused($searchBarIsFocused)
+                        .onSubmit {
+                            print("On Submbmit \(currentState.promptText)")
                             
-                            DebugHelper.log("Response AI: Success=\(success) - response=\(promptResponse) imgs=\(images?.count)")
-                            DebugHelper.log("Response AI: Response=\(promptResponse)")
+                            isBusy = true
                             
-                            //Clean images
-                            promptResponseImages = nil
-                            
-                            //Parse and add prompt response
-                            if let promptResponse = promptResponse {
-                                DebugHelper.log("Response AI: \(promptResponse)")
-                                //Stop animation
-                                isBusy = false
-                                //Clean prompt
-                                var cleanPrompt = promptResponse
-                                if let range = cleanPrompt.range(of:"\n\n") {
-                                    cleanPrompt = cleanPrompt.replacingCharacters(in: range, with:"")
-                                }
-    
-                                //Set prompt
-                                withAnimation{
-                                    self.promptResponse = cleanPrompt
-                                }
-                            }else if images != nil {
-                                //Nothing, images will show
-                                isBusy = false
-                                withAnimation{
-                                    self.promptResponseImages = images
-                                }
-                            }else{
-                                isBusy = false
-                                withAnimation{
-                                    self.promptResponse = "⚠️ Error reaching servers"
+                            Singleton.shared.serverRestAIRetrieve(forPrompt: currentState.promptText) { success, promptResponse, images  in
+                                
+                                DebugHelper.log("Response AI: Success=\(success) - response=\(promptResponse) imgs=\(images?.count)")
+                                DebugHelper.log("Response AI: Response=\(promptResponse)")
+                                
+                                //Clean images
+                                promptResponseImages = nil
+                                
+                                //Parse and add prompt response
+                                if let promptResponse = promptResponse {
+                                    DebugHelper.log("Response AI: \(promptResponse)")
+                                    //Stop animation
+                                    isBusy = false
+                                    //Clean prompt from initial \n\n
+                                    //Cancel, porque con codigo lo rompe
+                                    var cleanPrompt = promptResponse
+                                    //if let range = cleanPrompt.range(of:"\n\n") {
+                                    //   cleanPrompt = cleanPrompt.replacingCharacters(in: range, with:"")
+                                    //}
+                                    
+                                    //Set prompt
+                                    withAnimation{
+                                        self.promptResponse = cleanPrompt
+                                    }
+                                }else if images != nil {
+                                    //Nothing, images will show
+                                    isBusy = false
+                                    withAnimation{
+                                        self.promptResponseImages = images
+                                    }
+                                }else{
+                                    isBusy = false
+                                    withAnimation{
+                                        self.promptResponse = "⚠️ Error reaching servers"
+                                    }
                                 }
                             }
+                            
                         }
-                      
-                    }
-                    .disableAutocorrection(true)
-                    .textFieldStyle(MyTextFieldStyle())
-                    .font(Font.system(size: 28, design: .rounded))
-                    .onChange(of: currentState.promptText) { newValue in
-                        if newValue.isEmpty {
-                            promptResponse = nil
-                            promptResponseImages = nil
+                        .disableAutocorrection(true)
+                        .textFieldStyle(MyTextFieldStyle())
+                        .font(Font.system(size: 28, design: .rounded))
+                        .onChange(of: currentState.promptText) { newValue in
+                            if newValue.isEmpty {
+                                promptResponse = nil
+                                promptResponseImages = nil
+                            }
                         }
-                    }
-
-            }
-            .frame(width: 680)
-            .padding(0)
-            .padding(.vertical, 6)
-            //.background(Color.black)
-            .background(VisualEffectView(material: NSVisualEffectView.Material.popover, blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(.white.opacity(0.2), lineWidth: 1)
-            )
-            
-            
-            //EXPANDIBLE RESPONSE 
-            HStack{
-                //Hack for scroll to fit content: https://developer.apple.com/forums/thread/671690
-                ScrollView(.vertical, showsIndicators: scrollViewContentSize.height > 500 ? true : false) {
-                    if promptResponseImages != nil && !promptResponseImages!.isEmpty
-                    {
-                        /*
-                        AsyncImage(url: URL(string: promptResponse!.replacingOccurrences(of: "[IMG=", with: "").replacingOccurrences(of: "]", with: "")))
-                        { image in image.resizable() } placeholder: { Color.gray } .frame(width: 340, height: 340) .clipShape(RoundedRectangle(cornerRadius: 25))
-                         */
-                        
-                        
-                        Spacer()
-                            .frame(height: 20)
-                        Image(nsImage: promptResponseImages![0])
-                            .resizable()
-                            .frame(width: 380, height: 380)
+                    
+                }
+                .frame(width: 680)
+                .padding(0)
+                .padding(.vertical, 6)
+                //.background(Color.black)
+                .background(VisualEffectView(material: NSVisualEffectView.Material.popover, blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(.white.opacity(0.2), lineWidth: 1)
+                )
+                
+                
+                
+                //EXPANDIBLE RESPONSE
+                HStack{
+                    //Hack for scroll to fit content: https://developer.apple.com/forums/thread/671690
+                    ScrollView(.vertical, showsIndicators: scrollViewContentSize.height > 500 ? true : false) {
+                        if promptResponseImages != nil && !promptResponseImages!.isEmpty
+                        {
+                            /*
+                             AsyncImage(url: URL(string: promptResponse!.replacingOccurrences(of: "[IMG=", with: "").replacingOccurrences(of: "]", with: "")))
+                             { image in image.resizable() } placeholder: { Color.gray } .frame(width: 340, height: 340) .clipShape(RoundedRectangle(cornerRadius: 25))
+                             */
+                            
+                            
+                            Spacer()
+                                .frame(height: 20)
+                            Image(nsImage: promptResponseImages![0])
+                                .resizable()
+                                .frame(width: 380, height: 380)
                             //.padding(.vertical, 30) //to compensate the negative spacing of the parent VSTACK
-                            .clipShape(RoundedRectangle(cornerRadius: 25))
+                                .clipShape(RoundedRectangle(cornerRadius: 25))
                             //Animate if shown when you are searching a new thing
-                            .opacity(isBusy ? 0.5 : 1)
-                            .animation(isBusy
-                                       ? .linear(duration: 0.5).repeatForever(autoreverses: true)
-                                       : .none, value: isBusy)
+                                .opacity(isBusy ? 0.5 : 1)
+                                .animation(isBusy
+                                           ? .linear(duration: 0.5).repeatForever(autoreverses: true)
+                                           : .none, value: isBusy)
                             //Context menu
-                            .contextMenu {
+                                .contextMenu {
                                     Button {
                                         // save my code
                                         
                                         let savePanel = NSSavePanel()
-
+                                        
                                         savePanel.title = "Save your image"
                                         savePanel.message = "Choose a place to save this image"
                                         savePanel.prompt = "Save now"
                                         let response = savePanel.runModal()
-                                    
+                                        
                                         
                                         
                                     } label: {
@@ -169,71 +179,129 @@ struct ContentView: View {
                                     }
                                 }
                             //Resize scroll
-                            .background(
-                                GeometryReader { geo -> Color in
-                                    DispatchQueue.main.async {
-                                        var size = geo.size
-                                        size.height += 40 //spacers top/bottom
-                                        scrollViewContentSize = size
+                                .background(
+                                    GeometryReader { geo -> Color in
+                                        DispatchQueue.main.async {
+                                            var size = geo.size
+                                            size.height += 40 //spacers top/bottom
+                                            scrollViewContentSize = size
+                                        }
+                                        return Color.clear
                                     }
-                                    return Color.clear
-                                }
-                            )
-                            .overlay(
-                                Button(action: {
-                                    //Copy text
-                                    let pasteboard = NSPasteboard.general
-                                    //pasteboard.declareTypes([.string], owner: nil)
-                                    pasteboard.clearContents()
-                                    pasteboard.writeObjects([promptResponseImages![0]])
-                                    //Animate
-                                    //pressedCopy = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                        // your code here
-                                        //pressedCopy = false
-                                    }
-                                    
-                                }, label: {
+                                )
+                                .overlay(
+                                    Button(action: {
+                                        //Copy text
+                                        let pasteboard = NSPasteboard.general
+                                        //pasteboard.declareTypes([.string], owner: nil)
+                                        pasteboard.clearContents()
+                                        pasteboard.writeObjects([promptResponseImages![0]])
+                                        //Animate
+                                        //pressedCopy = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                            // your code here
+                                            //pressedCopy = false
+                                        }
+                                        
+                                    }, label: {
                                         Image(systemName: "doc.on.doc")
                                     })
                                     .offset(
                                         x: -10, y: 10
                                     )
-                                ,
-                                alignment: .topTrailing
-                            )
-                        
-                        Spacer()
-                            .frame(height: 20)
-                    }else{
-                        parseResponse(text: promptResponse ?? "")
-                            .background(
-                                GeometryReader { geo -> Color in
-                                    DispatchQueue.main.async {
-                                        scrollViewContentSize = geo.size
+                                    ,
+                                    alignment: .topTrailing
+                                )
+                            
+                            Spacer()
+                                .frame(height: 20)
+                        }else{
+                            parseResponse(text: promptResponse ?? "")
+                                .background(
+                                    GeometryReader { geo -> Color in
+                                        DispatchQueue.main.async {
+                                            scrollViewContentSize = geo.size
+                                        }
+                                        return Color.clear
                                     }
-                                    return Color.clear
-                                }
-                            )
+                                )
+                        }
+                        
                     }
-                    
+                    .frame(
+                        maxHeight: scrollViewContentSize.height
+                    )
                 }
-                .frame(
-                    maxHeight: scrollViewContentSize.height
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, (promptResponse == nil && promptResponseImages == nil)
+                         || (promptResponse != nil && promptResponse!.contains("```"))
+                         || promptResponseImages != nil ? 0 : 20) //so we can fit the copy button as overlay below
+                .frame(minHeight: (promptResponse != nil || promptResponseImages != nil) ? 100 : 0)
+                //.background(RoundedCorners(color: .black.opacity(0.5), tl: 0, tr: 0, bl: 20, br: 20))
+                .background(VisualEffectView(material: NSVisualEffectView.Material.popover, blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
+                .clipShape(RoundedCornersShape(tl: 0, tr: 0, bl: 20, br: 20))
+                .padding(.horizontal, 10)
+                .overlay(
+                    Button(action: {
+                        //Copy text
+                        let pasteboard = NSPasteboard.general
+                        //pasteboard.declareTypes([.string], owner: nil)
+                        pasteboard.clearContents()
+                        
+                        ///Copy image or text
+                        if promptResponseImages != nil && promptResponseImages!.count > 0 {
+                            pasteboard.writeObjects([promptResponseImages![0]])
+                        }else if promptResponse != nil {
+                            pasteboard.setString(promptResponse!, forType: .string)
+                        }
+                        
+                        //Animate
+                        //pressedCopy = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            // your code here
+                            //pressedCopy = false
+                        }
+                        
+                    }, label: {
+                        Image(systemName: "doc.on.doc")
+                    })
+                    // If the text contains CODE BLOCK OR IMAGE,
+                    // do not show this button
+                        .opacity((promptResponse == nil && promptResponseImages == nil)
+                                 || (promptResponse != nil && promptResponse!.contains("```"))
+                                 || promptResponseImages != nil ? 0 : 1)
+                        .offset(
+                            x: -50, y: -20
+                        )
+                    ,
+                    alignment: .bottomTrailing
                 )
+                .zIndex(-1) //below the box
+                .opacity((promptResponse != nil || promptResponseImages != nil) ? 1 : 0)
+                
+                
+                //NOTIFICATIOMN
+                if let updateNotif = Singleton.shared.currentState.notificationUpdateAvailable {
+                    HStack{
+                        Text(updateNotif.text ?? "Update available")
+                            .foregroundColor(.black)
+                            .font(Font.system(size: 10, weight: .medium, design: .rounded))
+                    }
+                    .frame(minHeight: 10)
+                    .padding(.horizontal, 10)
+                    .background(Color.yellow)
+                    .clipShape(RoundedRectangle(cornerRadius: 2))
+                    .onTapGesture {
+                        if let url = URL(string: updateNotif.url ?? "https://chaibar.ai") {
+                            NSWorkspace.shared.open(url)
+                        }
+                    }
+                }
+                
+                //PUSH ALL UP
+                Spacer()
+                
             }
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: (promptResponse != nil || promptResponseImages != nil) ? 100 : 0)
-            //.background(RoundedCorners(color: .black.opacity(0.5), tl: 0, tr: 0, bl: 20, br: 20))
-            .background(VisualEffectView(material: NSVisualEffectView.Material.popover, blendingMode: NSVisualEffectView.BlendingMode.withinWindow))
-            .clipShape(RoundedCornersShape(tl: 0, tr: 0, bl: 20, br: 20))
-            .padding(.horizontal, 10)
-            .zIndex(-1) //below the box
-            .opacity((promptResponse != nil || promptResponseImages != nil) ? 1 : 0)
-
-            
-            //PUSH ALL UP
-            Spacer()
            
         }
         .frame(height: 500)

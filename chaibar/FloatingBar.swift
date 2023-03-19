@@ -74,6 +74,8 @@ class FloatingBar: NSPanel {
                 // Clear
                 Singleton.shared.currentState.promptText = ""
             }
+            //Clean prompt & history
+            Singleton.shared.currentState.chatGPTHistory = [ChatGPTMessage]()
             //Abort by returning true
             return true
         default:

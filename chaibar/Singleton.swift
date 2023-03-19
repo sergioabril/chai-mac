@@ -80,20 +80,26 @@ class Singleton: NSObject, NSWindowDelegate {
 
         //print("CREATED!")
     }
+    
     // Delegate from NSWindowDelegate that is called when promptPanel loses focus
     func windowDidResignKey(_ notification: Notification) {
         if let panel = notification.object as? NSWindow {
+            
             //print("lost focus. is floatingPanel=\(panel == self.promptPanel)")
             if self.promptPanel == panel {
-                self.promptPanel?.close()
-                self.promptPanel = nil
+                if currentState.isBusyQueryingAI {
+                    DebugHelper.log("Dont dismiss cause busy querying AI")
+                }else{
+                    //self.promptPanel?.close()
+                    //self.promptPanel = nil
+                }
             }else{
-                panel.close()
+                //panel.close()
             }
             
             //Clean prompt & history
-            currentState.promptText = ""
-            currentState.chatGPTHistory = [ChatGPTMessage]()
+            //currentState.promptText = ""
+            //currentState.chatGPTHistory = [ChatGPTMessage]()
         }
     }
     
@@ -184,33 +190,70 @@ class Singleton: NSObject, NSWindowDelegate {
         }
         task.resume()
     }
-    ///3. Retrieve Alerst (could be consolidated eventually)
-    func serverRestAIRetrieve(forPrompt prompt: String,  callback: @escaping (_ success : Bool, _ promptResponse: String?, _ images: [NSImage]?)->())
+    ///1. Request to send Email Login Code
+    func serverRestSendEmailCode(forEmail email: String,  callback: @escaping (_ success : Bool, _ message: String?)->())
     {
-        DebugHelper.log("Sending AI Request to server for prompt=\(prompt)...")
-        
-       
+        DebugHelper.log("Sending request to get email codes at=\(email)...")
         
         
         // Some vars
         let dictionary = Bundle.main.infoDictionary!
-        //let version = dictionary["CFBundleShortVersionString"] as! String
+        let version = dictionary["CFBundleShortVersionString"] as! String
+        let build = dictionary["CFBundleVersion"] as! String
+        
+        // Build the actual request
+        let bodyRequest = RestSendEmailCodesRequest()
+        bodyRequest.uniqueIdentifier = "none" //getUserData().uniqueIdentifier
+        bodyRequest.appVersionNumber = version
+        bodyRequest.appBuildNumber = build
+        bodyRequest.email = email
+        bodyRequest.ts = "\(self.getCurrentTimesTamp())"
+        //let control = RestControlGenerator.getControlForRestAlertRetrieveRequest(withBody: bodyRequest, version: 1)
+        //bodyRequest.control = control;
+        
+        //Call
+        serverRestGeneric(body: bodyRequest, bodyType: RestSendEmailCodesRequest.self,  path: "/v1/au/sendcodes", responseType:  RestSendEmailCodesResponse.self) { (errorMessage, parsedResponse) in
+            
+            if let error = errorMessage {
+                //NETWORK ERROR
+                DebugHelper.logError("REST ERROR: \(error)")
+            }else if parsedResponse != nil {
+                //Send callback
+                callback(parsedResponse!.sent ?? false, parsedResponse!.message)
+                return
+            }
+            
+            //Callback
+            callback(false, "Cant reach server")
+        }
+    }
+    
+    ///3. Retrieve Alerst (could be consolidated eventually)
+    func serverRestAIRetrieve(forPrompt prompt: String,  callback: @escaping (_ success : Bool, _ promptResponse: String?, _ images: [NSImage]?)->())
+    {
+        DebugHelper.log("Sending AI Request to server for prompt=\(prompt)...")
+    
+        
+        // Some vars
+        let dictionary = Bundle.main.infoDictionary!
+        let version = dictionary["CFBundleShortVersionString"] as! String
         let build = dictionary["CFBundleVersion"] as! String
         
         // Build the actual request
         let bodyRequest = RestAIRetrieveRequest()
-        bodyRequest.uniqueIdentifier = "DEBUGDEMO" //getUserData().uniqueIdentifier
-        bodyRequest.serverToken = "none" //CurrentState.serverToken
+        bodyRequest.uniqueIdentifier = getUniqueIdentifier()
+        bodyRequest.serverToken = currentState.serverToken ?? "none"
+        bodyRequest.appVersionNumber = version
         bodyRequest.appBuildNumber = build
         bodyRequest.engine = .chatgpt
         bodyRequest.prompt = prompt
-        bodyRequest.chatHistory = Singleton.shared.currentState.chatGPTHistory
+        bodyRequest.chatHistory = currentState.chatGPTHistory
         bodyRequest.ts = "\(self.getCurrentTimesTamp())"
         //let control = RestControlGenerator.getControlForRestAlertRetrieveRequest(withBody: bodyRequest, version: 1)
         //bodyRequest.control = control;
         
         
-        // Add to history if chat GPT
+        // Add to history if chat GPT so we ca use later on
         if true {
             var newPromptChatGPT = ChatGPTMessage()
             newPromptChatGPT.role = .user
@@ -232,6 +275,7 @@ class Singleton: NSObject, NSWindowDelegate {
                 DebugHelper.logError("REST ERROR: \(error)")
             }else if parsedResponse != nil {
                 //DebugHelper.log("REST AI RESPONSE= \(parsedResponse!.response)")
+                
                 //Parse and add images
                 var b64images: [NSImage]?
                 if let givenImagesArray = parsedResponse!.images {
@@ -248,6 +292,10 @@ class Singleton: NSObject, NSWindowDelegate {
                     }
                 }
                 
+                //Set notification if any (or nil)
+                self.currentState.notificationUpdateAvailable = parsedResponse!.notificationUpdate
+                
+                //Send callback
                 callback(true, parsedResponse!.response, b64images)
                 return
             }

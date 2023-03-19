@@ -19,6 +19,7 @@ class RestAIRetrieveRequest : Encodable{
     var serverToken: String? //CurrentState.serverToken
     
     //App build
+    var appVersionNumber: String?
     var appBuildNumber: String?
 
     //Request AI specifics
@@ -44,4 +45,7 @@ class RestAIRetrieveResponse : Decodable{
     var response: String?                                       //AI Response
     
     var images: [String]?                                       //AI Images response, an array of JSON b64 images
+    
+    /// Possible notification to send to the user
+    var notificationUpdate: RestNotificationUpdate?
 }

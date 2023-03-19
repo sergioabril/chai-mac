@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		49095CF529C34BFD00360173 /* ChatGPTMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49095CF429C34BFD00360173 /* ChatGPTMessage.swift */; };
+		495CECEA29C714AA0029E660 /* RestNotificationUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CECE929C714AA0029E660 /* RestNotificationUpdate.swift */; };
+		495CECEC29C719DB0029E660 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CECEB29C719DB0029E660 /* LoginView.swift */; };
+		495CECEE29C71C180029E660 /* RestSendEmailCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CECED29C71C180029E660 /* RestSendEmailCodes.swift */; };
 		498AB29729BC881A00104E7D /* RestAIRetrieve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29129BC881900104E7D /* RestAIRetrieve.swift */; };
 		498AB29829BC881A00104E7D /* RestPurchasesReceiptValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29229BC881900104E7D /* RestPurchasesReceiptValidation.swift */; };
 		498AB29929BC881A00104E7D /* RestUserPushRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29329BC881900104E7D /* RestUserPushRegister.swift */; };
@@ -55,6 +58,9 @@
 
 /* Begin PBXFileReference section */
 		49095CF429C34BFD00360173 /* ChatGPTMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatGPTMessage.swift; sourceTree = "<group>"; };
+		495CECE929C714AA0029E660 /* RestNotificationUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestNotificationUpdate.swift; sourceTree = "<group>"; };
+		495CECEB29C719DB0029E660 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		495CECED29C71C180029E660 /* RestSendEmailCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSendEmailCodes.swift; sourceTree = "<group>"; };
 		498AB29129BC881900104E7D /* RestAIRetrieve.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAIRetrieve.swift; sourceTree = "<group>"; };
 		498AB29229BC881900104E7D /* RestPurchasesReceiptValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestPurchasesReceiptValidation.swift; sourceTree = "<group>"; };
 		498AB29329BC881900104E7D /* RestUserPushRegister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestUserPushRegister.swift; sourceTree = "<group>"; };
@@ -127,10 +133,12 @@
 			children = (
 				498AB29429BC881A00104E7D /* RestApi.swift */,
 				498AB29529BC881A00104E7D /* RestControl.swift */,
+				495CECED29C71C180029E660 /* RestSendEmailCodes.swift */,
 				498AB29129BC881900104E7D /* RestAIRetrieve.swift */,
 				498AB29629BC881A00104E7D /* RestAuthenticate.swift */,
 				498AB29229BC881900104E7D /* RestPurchasesReceiptValidation.swift */,
 				498AB29329BC881900104E7D /* RestUserPushRegister.swift */,
+				495CECE929C714AA0029E660 /* RestNotificationUpdate.swift */,
 			);
 			path = RestAPI;
 			sourceTree = "<group>";
@@ -204,6 +212,7 @@
 				49C637FC29AF6ABD00DB9A4B /* ContentView.swift */,
 				49C6382529AF6B0100DB9A4B /* FloatingBar.swift */,
 				498AB2A029BC88C200104E7D /* Singleton.swift */,
+				495CECEB29C719DB0029E660 /* LoginView.swift */,
 				49C637FE29AF6ABF00DB9A4B /* Assets.xcassets */,
 				49C6380329AF6ABF00DB9A4B /* chaibar.entitlements */,
 				49C6380029AF6ABF00DB9A4B /* Preview Content */,
@@ -383,12 +392,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				498AB29A29BC881A00104E7D /* RestApi.swift in Sources */,
+				495CECEA29C714AA0029E660 /* RestNotificationUpdate.swift in Sources */,
 				498AB2A129BC88C200104E7D /* Singleton.swift in Sources */,
 				49C6382829AF6B4D00DB9A4B /* AppDelegate.swift in Sources */,
+				495CECEC29C719DB0029E660 /* LoginView.swift in Sources */,
 				49C6382D29AF964200DB9A4B /* StatusBarController.swift in Sources */,
 				498AB29829BC881A00104E7D /* RestPurchasesReceiptValidation.swift in Sources */,
 				49B4C1EC29C07B5C00A15E38 /* CurrentState.swift in Sources */,
 				498AB2A829BCA98E00104E7D /* CornerRadius.swift in Sources */,
+				495CECEE29C71C180029E660 /* RestSendEmailCodes.swift in Sources */,
 				49095CF529C34BFD00360173 /* ChatGPTMessage.swift in Sources */,
 				498AB29929BC881A00104E7D /* RestUserPushRegister.swift in Sources */,
 				49C6382B29AF74E800DB9A4B /* Placeholder.swift in Sources */,
@@ -572,7 +584,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -600,7 +612,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = apps.nadastudio.chaibar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

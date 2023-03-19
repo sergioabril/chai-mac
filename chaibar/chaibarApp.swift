@@ -14,7 +14,7 @@ struct chaibarApp: App {
 
     var body: some Scene {
         WindowGroup {
-            //ContentView()
+            //LoginView(currentState: Singleton.shared.currentState)
         }
     }
 }
