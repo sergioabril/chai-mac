@@ -15,7 +15,7 @@ enum AIEngine : String, Codable {
 /// Request body to send an alert
 class RestAIRetrieveRequest : Encodable{
     //Identification (user UUID)
-    var uniqueIdentifier: String?
+    var deviceUniqueIdentifier: String?
     var serverToken: String? //CurrentState.serverToken
     
     //App build

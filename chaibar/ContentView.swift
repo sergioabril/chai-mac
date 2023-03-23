@@ -19,7 +19,7 @@ struct ContentView: View {
     @State var promptResponse : String? //= "Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento Lo siento pana lo siento " //"Para crear un loop en Swift:\n\n```\nfor i in 1...5 {\n print(i)\n}\n```\nTambién hay otros tipos de bucles en Swift como `i=1` y `1.0`, como el bucle while y el bucle repeat-while. ¿Te gustaría que te explique más sobre ellos?"
     
     @State var promptResponseImages: [NSImage]?// = [NSImage(named: "dummyImage")!]
-    
+    @State var isShowingPromptError: Bool = false
     
     /// Inner states
     @State private var scrollViewContentSize: CGSize = .zero
@@ -32,11 +32,8 @@ struct ContentView: View {
             if currentState.serverToken == nil{
                 LoginView(currentState: self.currentState)
             }else{
-                
-                
                 //SEARCHABLE PACK
                 ZStack{
-                    
                     //LEFT ICON
                     HStack{
                         Spacer()
@@ -73,13 +70,14 @@ struct ContentView: View {
                             
                             isBusy = true
                             
-                            Singleton.shared.serverRestAIRetrieve(forPrompt: currentState.promptText) { success, promptResponse, images  in
+                            Singleton.shared.serverRestAIRetrieve(forPrompt: currentState.promptText) { success, errorMessage, promptResponse, images  in
                                 
                                 DebugHelper.log("Response AI: Success=\(success) - response=\(promptResponse) imgs=\(images?.count)")
                                 DebugHelper.log("Response AI: Response=\(promptResponse)")
                                 
                                 //Clean images
                                 promptResponseImages = nil
+                                isShowingPromptError = false
                                 
                                 //Parse and add prompt response
                                 if let promptResponse = promptResponse {
@@ -105,8 +103,13 @@ struct ContentView: View {
                                     }
                                 }else{
                                     isBusy = false
+                                    isShowingPromptError = true
                                     withAnimation{
-                                        self.promptResponse = "⚠️ Error reaching servers"
+                                        if let msgError = errorMessage {
+                                            self.promptResponse = "⚠️ \(msgError)"
+                                        }else{
+                                            self.promptResponse = "⚠️ Error reaching servers"
+                                        }
                                     }
                                 }
                             }
@@ -266,9 +269,11 @@ struct ContentView: View {
                         Image(systemName: "doc.on.doc")
                     })
                     // If the text contains CODE BLOCK OR IMAGE,
+                    // Or is showing an error
                     // do not show this button
                         .opacity((promptResponse == nil && promptResponseImages == nil)
                                  || (promptResponse != nil && promptResponse!.contains("```"))
+                                 || isShowingPromptError
                                  || promptResponseImages != nil ? 0 : 1)
                         .offset(
                             x: -50, y: -20

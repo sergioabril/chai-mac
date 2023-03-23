@@ -347,7 +347,7 @@ class Singleton: NSObject, NSWindowDelegate {
         
         // Build the actual request
         let bodyRequest = RestSendEmailCodesRequest()
-        bodyRequest.uniqueIdentifier = getUniqueIdentifier() //getUserData().uniqueIdentifier
+        bodyRequest.deviceUniqueIdentifier = getUniqueIdentifier() //getUserData().uniqueIdentifier
         bodyRequest.appVersionNumber = version
         bodyRequest.appBuildNumber = build
         bodyRequest.email = email
@@ -384,7 +384,7 @@ class Singleton: NSObject, NSWindowDelegate {
         
         // Build the actual request
         let bodyRequest = RestValidateEmailCodesRequest()
-        bodyRequest.uniqueIdentifier = getUniqueIdentifier() //getUserData().uniqueIdentifier
+        bodyRequest.deviceUniqueIdentifier = getUniqueIdentifier() //getUserData().uniqueIdentifier
         bodyRequest.appVersionNumber = version
         bodyRequest.appBuildNumber = build
         bodyRequest.email = email
@@ -451,7 +451,7 @@ class Singleton: NSObject, NSWindowDelegate {
     }
     
     ///3. Retrieve Alerst (could be consolidated eventually)
-    func serverRestAIRetrieve(forPrompt prompt: String,  callback: @escaping (_ success : Bool, _ promptResponse: String?, _ images: [NSImage]?)->())
+    func serverRestAIRetrieve(forPrompt prompt: String,  callback: @escaping (_ success : Bool, _ errorMessage: String?, _ promptResponse: String?, _ images: [NSImage]?)->())
     {
         DebugHelper.log("Sending AI Request to server for prompt=\(prompt)...")
     
@@ -463,7 +463,7 @@ class Singleton: NSObject, NSWindowDelegate {
         
         // Build the actual request
         let bodyRequest = RestAIRetrieveRequest()
-        bodyRequest.uniqueIdentifier = getUniqueIdentifier()
+        bodyRequest.deviceUniqueIdentifier = getUniqueIdentifier()
         bodyRequest.serverToken = currentState.serverToken ?? "none"
         bodyRequest.appVersionNumber = version
         bodyRequest.appBuildNumber = build
@@ -495,8 +495,32 @@ class Singleton: NSObject, NSWindowDelegate {
             if let error = errorMessage {
                 //NETWORK ERROR
                 DebugHelper.logError("REST ERROR: \(error)")
+                callback(false, error, nil, nil)
+                return
             }else if parsedResponse != nil {
                 //DebugHelper.log("REST AI RESPONSE= \(parsedResponse!.response)")
+                
+                /// If we get a specific server error, show?
+                if let specificMessageError = parsedResponse?.message {
+                    callback(false, specificMessageError, nil, nil)
+                    return
+                }
+                
+                /// Before anything, Save some stuff like for chat history and notification update
+                DispatchQueue.main.async {
+                    
+                    /// Save response into chat as well!
+                    // Add to history if chat GPT so we ca use later on
+                    if let responsegpt = parsedResponse!.response {
+                        var newResponseChatGPT = ChatGPTMessage()
+                        newResponseChatGPT.role = .assistant
+                        newResponseChatGPT.content = responsegpt
+                        Singleton.shared.currentState.chatGPTHistory.append(newResponseChatGPT)
+                    }
+                    
+                    //Set notification if any (or nil)
+                    self.currentState.notificationUpdateAvailable = parsedResponse!.notificationUpdate
+                }
                 
                 //Parse and add images
                 var b64images: [NSImage]?
@@ -514,16 +538,22 @@ class Singleton: NSObject, NSWindowDelegate {
                     }
                 }
                 
-                //Set notification if any (or nil)
-                self.currentState.notificationUpdateAvailable = parsedResponse!.notificationUpdate
+                if b64images != nil && b64images!.isEmpty == false  && b64images!.count > 0{
+                    //Special callback removing response so no text is shown (which in case of images, it's their prompt for dall-e)
+                    //TODO: maybe handle this con the content view, displaying this text as ALT of the image?
+                    //Send callback
+                    callback(true, nil, nil, b64images)
+                }else{
+                    //Regular callback
+                    //Send callback
+                    callback(true, nil, parsedResponse!.response, b64images)
+                }
                 
-                //Send callback
-                callback(true, parsedResponse!.response, b64images)
                 return
             }
             
             //Callback
-            callback(false, nil, nil)
+            //callback(false, nil, nil, nil)
         }
     }
     

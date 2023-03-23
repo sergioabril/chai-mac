@@ -10,7 +10,7 @@ import Foundation
 /// Request body to send an alert
 class RestSendEmailCodesRequest : Encodable{
     //Identification (user UUID)
-    var uniqueIdentifier: String?
+    var deviceUniqueIdentifier: String?
     
     //App build
     var appVersionNumber: String?

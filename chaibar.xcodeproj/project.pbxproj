@@ -16,7 +16,6 @@
 		498AB29729BC881A00104E7D /* RestAIRetrieve.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29129BC881900104E7D /* RestAIRetrieve.swift */; };
 		498AB29A29BC881A00104E7D /* RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29429BC881A00104E7D /* RestApi.swift */; };
 		498AB29B29BC881A00104E7D /* RestControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29529BC881A00104E7D /* RestControl.swift */; };
-		498AB29C29BC881A00104E7D /* RestAuthenticate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29629BC881A00104E7D /* RestAuthenticate.swift */; };
 		498AB29F29BC884C00104E7D /* DebugHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB29E29BC884C00104E7D /* DebugHelper.swift */; };
 		498AB2A129BC88C200104E7D /* Singleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A029BC88C200104E7D /* Singleton.swift */; };
 		498AB2A329BC89BB00104E7D /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498AB2A229BC89BB00104E7D /* KeychainHelper.swift */; };
@@ -66,7 +65,6 @@
 		498AB29129BC881900104E7D /* RestAIRetrieve.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAIRetrieve.swift; sourceTree = "<group>"; };
 		498AB29429BC881A00104E7D /* RestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestApi.swift; sourceTree = "<group>"; };
 		498AB29529BC881A00104E7D /* RestControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestControl.swift; sourceTree = "<group>"; };
-		498AB29629BC881A00104E7D /* RestAuthenticate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestAuthenticate.swift; sourceTree = "<group>"; };
 		498AB29E29BC884C00104E7D /* DebugHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugHelper.swift; sourceTree = "<group>"; };
 		498AB2A029BC88C200104E7D /* Singleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singleton.swift; sourceTree = "<group>"; };
 		498AB2A229BC89BB00104E7D /* KeychainHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
@@ -146,7 +144,6 @@
 				495CECED29C71C180029E660 /* RestSendEmailCodes.swift */,
 				495CECFD29CC5AB40029E660 /* RestValidateEmailCodes.swift */,
 				498AB29129BC881900104E7D /* RestAIRetrieve.swift */,
-				498AB29629BC881A00104E7D /* RestAuthenticate.swift */,
 			);
 			path = RestAPI;
 			sourceTree = "<group>";
@@ -416,7 +413,6 @@
 				498AB29729BC881A00104E7D /* RestAIRetrieve.swift in Sources */,
 				49C637FB29AF6ABD00DB9A4B /* chaibarApp.swift in Sources */,
 				49C6382629AF6B0100DB9A4B /* FloatingBar.swift in Sources */,
-				498AB29C29BC881A00104E7D /* RestAuthenticate.swift in Sources */,
 				498AB29F29BC884C00104E7D /* DebugHelper.swift in Sources */,
 				498AB2A529BC8C1000104E7D /* DigestExtension.swift in Sources */,
 				498AB2A329BC89BB00104E7D /* KeychainHelper.swift in Sources */,
