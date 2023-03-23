@@ -27,6 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             window.close()
         }
         
+        // Initial Logic
+        _ = Singleton.shared.logicOnStart()
         
         // Create status bar
         statusBar = StatusBarController()

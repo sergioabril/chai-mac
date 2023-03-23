@@ -29,7 +29,7 @@ struct ContentView: View {
         VStack(spacing: 0) {
                     
             // LOGIN
-            if currentState.serverToken == nil {
+            if currentState.serverToken == nil{
                 LoginView(currentState: self.currentState)
             }else{
                 

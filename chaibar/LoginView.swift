@@ -6,14 +6,24 @@
 //
 import SwiftUI
 
+
+enum LoginViewPhase {
+    case email
+    case code
+    case finished
+}
+
 struct LoginView: View {
     @ObservedObject var currentState: CurrentState
     
-    @FocusState private var mailIsFocused : Bool
-
-    @State var formEmail: String = ""
+    @State var phase: LoginViewPhase = .email
     
+    @State var formEmail: String = ""
+    @State var formCode: String = ""
+
     @State var isBusy: Bool = false
+    
+    @State var errorMessage: String?// = "bla bla"
     
     var body: some View {
         
@@ -37,48 +47,28 @@ struct LoginView: View {
                 Spacer()
                     .frame(height: 30)
                 
-                /// Text
-                Text("Type in the email you used to purchase a license, and we'll send you a code:")
-                    .foregroundColor(.gray)
                 
-                ZStack{
-                    /// Email
-                    TextField("youremail@dot.com", text: $formEmail)
-                        .placeholder(when: formEmail.isEmpty ) {
-                            /// Custom placeholder modifier instead of txfield default
-                            /// So we can customize it
-                            Text("your@email.com")
-                                .foregroundColor(Color.red)
-                                .padding(.leading, 0)
-                                .font(Font.system(size: 20, design: .rounded))
-                                .opacity(mailIsFocused ? 0.5 : 1)
-                        }
-                        .focused($mailIsFocused)
-                        .onSubmit {
-                            print("On Submbmit Email\(formEmail)")
-                            
-                            sendMail(email: formEmail)
-                        }
-                        .disableAutocorrection(true)
-                        .font(Font.system(size: 23, weight: .light, design: .rounded))
-                        .textFieldStyle(MailTextFieldStyle())
+                switch(phase)
+                {
+                case .email:
+                    LoginViewPhaseEmail(sendEmail: {
+                                            sendMail(email: formEmail)
+                                        },
+                                        formEmail: $formEmail,
+                                        errorMessage: $errorMessage,
+                                        isBusy: $isBusy)
+                case .code:
+                    LoginViewPhaseCode(validateCode: {
+                                            validateCode(email: formEmail, code: formCode)
+                                        },
+                                       formCode: $formCode,
+                                       errorMessage: $errorMessage,
+                                       isBusy: $isBusy)
+                default:
+                    Text("Unexpected phase")
                 }
-                .padding(.horizontal, 10)
-                .frame(maxWidth: .infinity)
-                .frame(height: 40)
-                .overlay(RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.black.opacity(0.2), lineWidth: 1)
-                )
                 
                 
-                Spacer()
-                    
-                
-                Button("Send Login code", action: {
-                    sendMail(email: formEmail)
-                })
-                .opacity(isBusy ? 0 : 1)
-                .animation(.default, value: isBusy)
                 
                 Spacer()
                     .frame(height: 20)
@@ -93,7 +83,7 @@ struct LoginView: View {
     }
     
     
-    
+    /// Method to send email
     func sendMail(email: String)
     {
         DebugHelper.log("sendMail: email=\(email)")
@@ -102,17 +92,190 @@ struct LoginView: View {
             return
         }
         
+        errorMessage = nil
+        
         isBusy = true
         Singleton.shared.serverRestSendEmailCode(forEmail: email) { success, message in
             
             DebugHelper.log("Response EMAIL: Success=\(success) - msg=\(message)")
-            
+            errorMessage = message
             isBusy = false
+            
+            
+            if success {
+                phase = .code
+            }
         }
+    }
+    
+    /// Validate codes
+    func validateCode(email: String, code: String)
+    {
+        DebugHelper.log("validateCode: email=\(email) code=\(code)")
+
+        if isBusy {
+            return
+        }
+        
+        errorMessage = nil
+        
+        isBusy = true
+        
+        Singleton.shared.serverRestValidateEmailCodes(forEmail: email, code: code) { success, message in
+            DebugHelper.log("Response EMAIL+CODE: Success=\(success) - msg=\(message)")
+            errorMessage = message
+            isBusy = false
+            
+            if success == false {
+                self.formCode = ""
+            }
+        }
+
     }
 }
 
 
+/// VIEW INSERT EMAIL
+struct LoginViewPhaseEmail: View {
+    
+    @FocusState private var mailIsFocused : Bool
+
+    var sendEmail: () -> Void
+    
+    @Binding var formEmail: String
+    @Binding var errorMessage: String?
+    @Binding var isBusy: Bool
+    
+    var body: some View {
+        Group {
+            /// Text
+            Text("Type in the email you used to purchase a license, and we'll send you a code:")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(.gray)
+            
+            ZStack{
+                /// Email
+                TextField("youremail@dot.com", text: $formEmail)
+                    .placeholder(when: formEmail.isEmpty ) {
+                        /// Custom placeholder modifier instead of txfield default
+                        /// So we can customize it
+                        Text("your@email.com")
+                            .foregroundColor(Color.red)
+                            .padding(.leading, 0)
+                            .font(Font.system(size: 20, design: .rounded))
+                            .opacity(mailIsFocused ? 0.5 : 1)
+                    }
+                    .focused($mailIsFocused)
+                    .onSubmit {
+                        print("On Submbmit Email\(formEmail)")
+                        
+                        sendEmail()
+                    }
+                    .disableAutocorrection(true)
+                    .font(Font.system(size: 23, weight: .light, design: .rounded))
+                    .textFieldStyle(MailTextFieldStyle())
+            }
+            .padding(.horizontal, 10)
+            .frame(maxWidth: .infinity)
+            .frame(height: 40)
+            .overlay(RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(.black.opacity(0.2), lineWidth: 1)
+            )
+            
+            //MESSAGE ERROR
+            if errorMessage != nil {
+                Spacer()
+                    .frame(height: 5)
+                ZStack{
+                    Text(errorMessage!)
+                        .foregroundColor(.red)
+                        .font(Font.system(size: 10, weight: .light, design: .rounded))
+                }
+                Spacer()
+            }else{
+                Spacer()
+            }
+                
+            
+            Button("Send Login code", action: {
+                sendEmail()
+            })
+            .opacity(isBusy ? 0 : 1)
+            .animation(.default, value: isBusy)
+        }
+    }
+}
+
+/// VIEW INSERT CODE
+struct LoginViewPhaseCode: View {
+    
+    @FocusState private var codeIsFocused : Bool
+
+    var validateCode: () -> Void
+    
+    @Binding var formCode: String
+    @Binding var errorMessage: String?
+    @Binding var isBusy: Bool
+    
+    var body: some View {
+        Group {
+            /// Text
+            Text("We sent you an email with the code\n(check spam as well):")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(.gray)
+            
+            ZStack{
+                /// Email
+                TextField("youremail@dot.com", text: $formCode)
+                    .placeholder(when: formCode.isEmpty ) {
+                        /// Custom placeholder modifier instead of txfield default
+                        /// So we can customize it
+                        Text("type-the-code")
+                            .foregroundColor(Color.red)
+                            .padding(.leading, 0)
+                            .font(Font.system(size: 20, design: .rounded))
+                            .opacity(0.2)
+                    }
+                    .focused($codeIsFocused)
+                    .onSubmit {
+                        print("On Submbmit codes\(formCode)")
+                        
+                        validateCode()
+                    }
+                    .disableAutocorrection(true)
+                    .font(Font.system(size: 23, weight: .light, design: .rounded))
+                    .textFieldStyle(MailTextFieldStyle())
+            }
+            .padding(.horizontal, 10)
+            .frame(maxWidth: .infinity)
+            .frame(height: 40)
+            .overlay(RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(.black.opacity(0.2), lineWidth: 1)
+            )
+            
+            //MESSAGE ERROR
+            if errorMessage != nil {
+                Spacer()
+                    .frame(height: 5)
+                ZStack{
+                    Text(errorMessage!)
+                        .foregroundColor(.red)
+                        .font(Font.system(size: 10, weight: .light, design: .rounded))
+                }
+                Spacer()
+            }else{
+                Spacer()
+            }
+                
+            
+            Button("Validate Code", action: {
+                validateCode()
+            })
+            .opacity(isBusy ? 0 : 1)
+            .animation(.default, value: isBusy)
+        }
+    }
+}
 
 // MARK: TextField Search Style
 struct MailTextFieldStyle: TextFieldStyle {

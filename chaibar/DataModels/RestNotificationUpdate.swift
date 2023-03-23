@@ -3,10 +3,9 @@
 //  chaibar
 //
 //  Created by Sergio Abril Herrero on 19/3/23.
-//
+// Notification to show update. Usually given back from some REST request
 
 import Foundation
-/// Notification to show update
 class RestNotificationUpdate : Encodable, Decodable{
     //text
     var text: String?

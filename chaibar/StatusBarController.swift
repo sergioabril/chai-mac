@@ -22,16 +22,26 @@ class StatusBarController {
         // Add a menu and a menu item
         let menu = NSMenu()
         
+        
+        
         let showMenuItem = NSMenuItem()
-        showMenuItem.title = "Show / Hide Bar"
+        showMenuItem.title = "Toggle bar (⌘+E)"
         showMenuItem.action = #selector(showAppTapped(sender:))
         showMenuItem.target = self
         menu.addItem(showMenuItem)
         
         menu.addItem(.separator())
         
+        let helpMenuItem = NSMenuItem()
+        helpMenuItem.title = "Help & Contact"
+        helpMenuItem.action = #selector(helpTapped(sender:))
+        helpMenuItem.target = self
+        menu.addItem(helpMenuItem)
+        
+        menu.addItem(.separator())
+        
         let quitMenuItem = NSMenuItem()
-        quitMenuItem.title = "Quit"
+        quitMenuItem.title = "Quit Chai"
         quitMenuItem.action = #selector(menuItemQuitTapped(sender:))
         quitMenuItem.target = self
         menu.addItem(quitMenuItem)
@@ -52,6 +62,12 @@ class StatusBarController {
     func showAppTapped(sender: AnyObject)
     {
         Singleton.shared.togglePrompt()
+    }
+    
+    @objc
+    func helpTapped(sender: AnyObject)
+    {
+        NSWorkspace.shared.open(URL(string: "mailto:hola@nada.studio")!)
     }
         
     @objc

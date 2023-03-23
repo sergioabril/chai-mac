@@ -9,7 +9,7 @@ import Foundation
 
 class DebugHelper {
     /// When true, we use the debug local api mode
-    public static let API_DEBUG_MODE = false
+    public static let API_DEBUG_MODE = true
     
     /// When true, we skip token
     public static let TOKEN_DEBUG_DEMO = false

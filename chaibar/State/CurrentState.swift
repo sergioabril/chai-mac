@@ -9,7 +9,9 @@ import Foundation
 
 class CurrentState : ObservableObject {
     /// INTERNAL
-    var serverToken: String?
+    @Published var licenseEmail: String?
+    @Published var serverToken: String?
+    @Published var serverTokenExpiration: Date?
     
     /// LOCKS
     var isBusyQueryingAI: Bool = false

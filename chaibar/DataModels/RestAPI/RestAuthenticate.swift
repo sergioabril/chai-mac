@@ -25,6 +25,8 @@ class RestAuthenticateRequest : Encodable{
     //Locale
     var region: String?   //not signed by control
     
+    //Email
+    
     //Timestamp - REALLY IMPORTANT
     var ts: String?
     

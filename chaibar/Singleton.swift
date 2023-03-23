@@ -33,9 +33,153 @@ class Singleton: NSObject, NSWindowDelegate {
     // MARK: Pointers
     var currentState = CurrentState()
 
-    
     // MARK: variables
     var promptPanel: FloatingBar?
+        
+    // MARK: User Data
+    ///Some quick info about the user, like the device identifier used to send requests to the server, the creation date, picked interests, etc
+    private let ConstantUserDataKey = "localUserData"
+    /// Variable to store lcoal data
+    private var userData: UserData?
+    /// Check if we are a new user
+    func getUserData() -> UserData
+    {
+        //If on memory, return
+        if let loadedOnMemory = userData {
+            return loadedOnMemory
+        }
+        
+        //If not on memory, try to retrieve from local prefs
+        if let data = UserDefaults.standard.data(forKey: ConstantUserDataKey) {
+            do {
+                // Create JSON Decoder
+                let decoder = JSONDecoder()
+                
+                // Decode Note
+                let newLoadedData = try decoder.decode(UserData.self, from: data)
+                userData = newLoadedData;
+                return userData!
+            } catch {
+                DebugHelper.logError("Unable to Decode UserData (\(error))")
+                fatalError("Error loading Local")
+            }
+        }
+        
+        //If we get here, we have no user data! create it
+        self.createUserData()
+        
+        //Return
+        return userData!
+    }
+    /// Save local data
+    func saveUserData() {
+        let currentUserData = getUserData()
+        
+        do {
+            // Create JSON Encoder
+            let encoder = JSONEncoder()
+            
+            // Encode Note
+            let data = try encoder.encode(currentUserData)
+            
+            // Write/Set Data
+            UserDefaults.standard.set(data, forKey: ConstantUserDataKey)
+        } catch {
+            DebugHelper.logError("Unable to Encode UserData (\(error))")
+        }
+    }
+    /// Create new UserData
+    private func createUserData()
+    {
+        //Create class
+        userData = UserData()
+        
+        //Assign unique identifier
+        let identifier = getUniqueIdentifier()
+        DebugHelper.log("Created new user with identifier: \(identifier)")
+        
+        //Save creation date, country and lang
+        userData!.creationDate = Date()
+        userData!.creationRegionCode = Locale.current.regionCode
+        DebugHelper.log("Region code is \(userData!.creationRegionCode!) and Date \(userData!.creationDate!)")
+        
+        //Assign first open
+        userData!.timesOpened = 0
+        
+        //And save it
+        self.saveUserData()
+    }
+    //Delete
+    private func deleteUserData()
+    {
+        UserDefaults.standard.removeObject(forKey: ConstantUserDataKey)
+    }
+    
+    
+    // MARK: Main Logic
+    /// Finally, any singleton should define some business logic, which can be
+    /// executed on its instance.
+    /// I used to call this on the instance generation above, but was a mistake, cause caused exception when calling shared from any method called here
+    /// So now I call this on AppDelegate, after creating the instance
+    func logicOnStart(){
+        // ...
+        DebugHelper.log("logicOnStart - Initializing Singleton...")
+        /// LOAD IAP's
+        ///
+        /*
+        self.purchaser.startWith(sharedSecret: "fake")
+
+        /// Also refresh receipt
+        self.purchaser.refreshSubscriptionsStatus {
+            DebugHelper.log("logicOnStart - REFRESH SUBS STATUS OK")
+        } failure: { error in
+            DebugHelper.logError("logicOnStart - REFRESH Error \(error)")
+        }
+        */
+                
+
+        //Force to get the userData by colling it
+        let currentUserData = self.getUserData();
+    
+        //Increase app counter of times opened
+        if currentUserData.timesOpened == nil {
+            currentUserData.timesOpened = 0
+        }
+        currentUserData.timesOpened? += 1
+        saveUserData()
+        
+        
+        //
+        //Load to currentState the proper serverToken and identity
+        //
+        
+        currentState.licenseEmail = currentUserData.licenseEmail
+        currentState.serverToken = currentUserData.serverToken
+        currentState.serverTokenExpiration = currentUserData.serverTokenExpiration
+        
+        if currentState.serverTokenExpiration != nil {
+            if Date.now > currentState.serverTokenExpiration! {
+                //DebugHelper.log("Token has expired!!!!! Clean")
+                cleanLicenseInfo()
+            }
+        }
+        
+    }
+    
+    
+    func cleanLicenseInfo()
+    {
+        currentState.licenseEmail = nil
+        currentState.serverToken = nil
+        currentState.serverTokenExpiration = nil
+        
+        let currentUserData = self.getUserData();
+        currentUserData.licenseEmail = nil
+        currentUserData.serverToken = nil
+        currentUserData.serverTokenExpiration = nil
+        
+        saveUserData()
+    }
     
     // MARK: Prompt Panel management
     // Call to toggle open/close
@@ -203,7 +347,7 @@ class Singleton: NSObject, NSWindowDelegate {
         
         // Build the actual request
         let bodyRequest = RestSendEmailCodesRequest()
-        bodyRequest.uniqueIdentifier = "none" //getUserData().uniqueIdentifier
+        bodyRequest.uniqueIdentifier = getUniqueIdentifier() //getUserData().uniqueIdentifier
         bodyRequest.appVersionNumber = version
         bodyRequest.appBuildNumber = build
         bodyRequest.email = email
@@ -212,7 +356,7 @@ class Singleton: NSObject, NSWindowDelegate {
         //bodyRequest.control = control;
         
         //Call
-        serverRestGeneric(body: bodyRequest, bodyType: RestSendEmailCodesRequest.self,  path: "/v1/au/sendcodes", responseType:  RestSendEmailCodesResponse.self) { (errorMessage, parsedResponse) in
+        serverRestGeneric(body: bodyRequest, bodyType: RestSendEmailCodesRequest.self,  path: "/v1/au/sendmailcodes", responseType:  RestSendEmailCodesResponse.self) { (errorMessage, parsedResponse) in
             
             if let error = errorMessage {
                 //NETWORK ERROR
@@ -220,6 +364,84 @@ class Singleton: NSObject, NSWindowDelegate {
             }else if parsedResponse != nil {
                 //Send callback
                 callback(parsedResponse!.sent ?? false, parsedResponse!.message)
+                return
+            }
+            
+            //Callback
+            callback(false, "Cant reach server")
+        }
+    }
+    ///2. Request to validate email and code
+    func serverRestValidateEmailCodes(forEmail email: String, code: String,  callback: @escaping (_ success: Bool, _ message: String?)->())
+    {
+        DebugHelper.log("Sending request to validate email=\(email) with code=\(code)...")
+        
+        
+        // Some vars
+        let dictionary = Bundle.main.infoDictionary!
+        let version = dictionary["CFBundleShortVersionString"] as! String
+        let build = dictionary["CFBundleVersion"] as! String
+        
+        // Build the actual request
+        let bodyRequest = RestValidateEmailCodesRequest()
+        bodyRequest.uniqueIdentifier = getUniqueIdentifier() //getUserData().uniqueIdentifier
+        bodyRequest.appVersionNumber = version
+        bodyRequest.appBuildNumber = build
+        bodyRequest.email = email
+        bodyRequest.code = code;
+        bodyRequest.ts = "\(self.getCurrentTimesTamp())"
+        //let control = RestControlGenerator.getControlForRestAlertRetrieveRequest(withBody: bodyRequest, version: 1)
+        //bodyRequest.control = control;
+        
+        //Call
+        serverRestGeneric(body: bodyRequest, bodyType: RestValidateEmailCodesRequest.self,  path: "/v1/au/validatemailcodes", responseType:  RestValidateEmailCodesResponse.self) { (errorMessage, parsedResponse) in
+            
+            if let error = errorMessage {
+                //NETWORK ERROR
+                DebugHelper.logError("ValidateEmailCodes REST ERROR: \(error)")
+            }else if parsedResponse != nil {
+                
+                //If success, save stuff
+                if let receivedServerToken = parsedResponse!.serverToken {
+                    if !receivedServerToken.isEmpty {
+                        DebugHelper.log("Received server token! Success")
+                        
+                        /// IMPORTANT: SET THIS ON MAIN THREAD OR THEY WONT BE PUBLISHED
+                        DispatchQueue.main.async {
+                            /// Save server token
+                            self.currentState.serverToken = receivedServerToken
+                            
+                            if let expiresIn = parsedResponse!.serverTokenExpiresInSeconds {
+                                let expiryDate = Date(timeIntervalSinceNow: TimeInterval(expiresIn))
+                                self.currentState.serverTokenExpiration = expiryDate
+                                
+                                DebugHelper.log("Server token expires in \(expiresIn)s, so at \(expiryDate)")
+                            }else{
+                                self.currentState.serverTokenExpiration = nil
+                            }
+
+                            /// Save email as identity for user
+                            self.currentState.licenseEmail = email
+    
+                            let currentUserD = self.getUserData()
+                            currentUserD.licenseEmail = self.currentState.licenseEmail
+                            currentUserD.serverToken = self.currentState.serverToken
+                            currentUserD.serverTokenExpiration = self.currentState.serverTokenExpiration
+                            self.saveUserData()
+                            
+                            
+                            DebugHelper.log("Server token expires at \(self.currentState.serverTokenExpiration)")
+                        }
+
+                        
+                        //Success
+                        callback(true, nil)
+                        return
+                    }
+                }
+                
+                //Send callback
+                callback(false, parsedResponse!.message ?? "unknown error")
                 return
             }
             
