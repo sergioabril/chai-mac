@@ -124,6 +124,7 @@ struct ContentView: View {
                                 promptResponseImages = nil
                             }
                         }
+                
                     
                 }
                 .frame(width: 680)

@@ -194,6 +194,11 @@ class Singleton: NSObject, NSWindowDelegate {
             if closeIfOpen {
                 self.promptPanel!.close()
                 self.promptPanel = nil
+                
+                /// CLEAN PROMPT AND HISTORY just in cases
+                currentState.promptText = ""
+                currentState.chatGPTHistory = [ChatGPTMessage]()
+            
             }
         }
     }

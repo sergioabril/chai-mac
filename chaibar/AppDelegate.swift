@@ -38,6 +38,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Singleton.shared.togglePrompt()
         })
         
+        
+        //Start by showing it if not shown after 1 sec
+        //If I make it appear before, without delay, it loses focus, so this is the hacky workaround til I find out what's getting focus instead
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            Singleton.shared.togglePrompt(closeIfOpen: false)
+        }
+        
 
     }
 
