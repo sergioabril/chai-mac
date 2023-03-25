@@ -19,6 +19,7 @@ struct VisualEffectView: NSViewRepresentable {
         visualEffectView.material = material
         visualEffectView.blendingMode = blendingMode
         visualEffectView.state = NSVisualEffectView.State.active
+        visualEffectView.isEmphasized = true //emphasized means dark in the new language wtf
         return visualEffectView
     }
 

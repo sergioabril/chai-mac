@@ -29,13 +29,13 @@ struct LoginView: View {
         
         ZStack{
         
-            Color.white
+            
             
             VStack{
                 /// ICON
                 Spacer()
                     .frame(height: 30)
-                Image("barIcon")
+                Image("barIcon_white")
                     .resizable()
                     .frame(width: 40, height: 40)
                     .rotationEffect(isBusy ? .degrees(360) : .degrees(0))
@@ -60,7 +60,7 @@ struct LoginView: View {
                 case .code:
                     LoginViewPhaseCode(validateCode: {
                                             validateCode(email: formEmail, code: formCode)
-                                        },
+                                        }, formEmail: $formEmail,
                                        formCode: $formCode,
                                        errorMessage: $errorMessage,
                                        isBusy: $isBusy)
@@ -75,7 +75,8 @@ struct LoginView: View {
             }
             .padding(20)
         }
-        .background(.thinMaterial)
+        //.background(Material.)
+        .background(VisualEffectView(material: .ultraDark, blendingMode: .withinWindow))
         .frame(width: 320, height: 350)
         .clipShape(RoundedRectangle(cornerRadius: 20))
         
@@ -128,6 +129,8 @@ struct LoginView: View {
             
             if success == false {
                 self.formCode = ""
+            }else{
+
             }
         }
 
@@ -151,19 +154,19 @@ struct LoginViewPhaseEmail: View {
             /// Text
             Text("Type in the email you used to purchase a license, and we'll send you a code:")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(.gray)
+                .foregroundColor(.white.opacity(0.7))
             
             ZStack{
                 /// Email
-                TextField("youremail@dot.com", text: $formEmail)
+                TextField("", text: $formEmail)
                     .placeholder(when: formEmail.isEmpty ) {
                         /// Custom placeholder modifier instead of txfield default
                         /// So we can customize it
-                        Text("your@email.com")
-                            .foregroundColor(Color.red)
+                        Text(verbatim: "your@email.com") //verbatim:  removes hyperlinks
+                            .foregroundColor(Color.white)
                             .padding(.leading, 0)
                             .font(Font.system(size: 20, design: .rounded))
-                            .opacity(mailIsFocused ? 0.5 : 1)
+                            .opacity(mailIsFocused ? 0.3 : 0.9)
                     }
                     .focused($mailIsFocused)
                     .onSubmit {
@@ -172,13 +175,14 @@ struct LoginViewPhaseEmail: View {
                         sendEmail()
                     }
                     .disableAutocorrection(true)
-                    .font(Font.system(size: 23, weight: .light, design: .rounded))
+                    .font(Font.system(size: 18, weight: .light, design: .rounded))
                     .textFieldStyle(MailTextFieldStyle())
+
             }
             .padding(.horizontal, 10)
             .frame(maxWidth: .infinity)
             .frame(height: 40)
-            .overlay(RoundedRectangle(cornerRadius: 10)
+            .overlay(RoundedRectangle(cornerRadius: 14)
                 .strokeBorder(.black.opacity(0.2), lineWidth: 1)
             )
             
@@ -188,7 +192,7 @@ struct LoginViewPhaseEmail: View {
                     .frame(height: 5)
                 ZStack{
                     Text(errorMessage!)
-                        .foregroundColor(.red)
+                        .foregroundColor(.white)
                         .font(Font.system(size: 10, weight: .light, design: .rounded))
                 }
                 Spacer()
@@ -200,6 +204,7 @@ struct LoginViewPhaseEmail: View {
             Button("Send Login code", action: {
                 sendEmail()
             })
+            .disabled(isBusy)
             .opacity(isBusy ? 0 : 1)
             .animation(.default, value: isBusy)
         }
@@ -213,6 +218,7 @@ struct LoginViewPhaseCode: View {
 
     var validateCode: () -> Void
     
+    @Binding var formEmail: String
     @Binding var formCode: String
     @Binding var errorMessage: String?
     @Binding var isBusy: Bool
@@ -220,22 +226,23 @@ struct LoginViewPhaseCode: View {
     var body: some View {
         Group {
             /// Text
-            Text("We sent you an email with the code\n(check spam as well):")
+            Text("Code sent to \(formEmail)\n(check spam as well)")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(.gray)
+                .foregroundColor(.white.opacity(0.7))
             
             ZStack{
                 /// Email
-                TextField("youremail@dot.com", text: $formCode)
+                TextField("", text: $formCode)
                     .placeholder(when: formCode.isEmpty ) {
                         /// Custom placeholder modifier instead of txfield default
                         /// So we can customize it
                         Text("type-the-code")
-                            .foregroundColor(Color.red)
+                            .foregroundColor(Color.white)
                             .padding(.leading, 0)
-                            .font(Font.system(size: 20, design: .rounded))
-                            .opacity(0.2)
+                            .font(Font.system(size: 18, design: .rounded))
+                            .opacity(codeIsFocused ? 0.3 : 0.9)
                     }
+                    .lineLimit(1)
                     .focused($codeIsFocused)
                     .onSubmit {
                         print("On Submbmit codes\(formCode)")
@@ -243,7 +250,7 @@ struct LoginViewPhaseCode: View {
                         validateCode()
                     }
                     .disableAutocorrection(true)
-                    .font(Font.system(size: 23, weight: .light, design: .rounded))
+                    .font(Font.system(size: 18, weight: .light, design: .rounded))
                     .textFieldStyle(MailTextFieldStyle())
             }
             .padding(.horizontal, 10)
@@ -259,7 +266,7 @@ struct LoginViewPhaseCode: View {
                     .frame(height: 5)
                 ZStack{
                     Text(errorMessage!)
-                        .foregroundColor(.red)
+                        .foregroundColor(.white)
                         .font(Font.system(size: 10, weight: .light, design: .rounded))
                 }
                 Spacer()
@@ -271,8 +278,10 @@ struct LoginViewPhaseCode: View {
             Button("Validate Code", action: {
                 validateCode()
             })
+            .disabled(isBusy)
             .opacity(isBusy ? 0 : 1)
             .animation(.default, value: isBusy)
+            
         }
     }
 }
@@ -284,7 +293,7 @@ struct MailTextFieldStyle: TextFieldStyle {
         configuration
             .textFieldStyle(.plain) //Important, so we dont get background not rounded focus blueish tint
         .frame(maxWidth: .infinity)
-        .foregroundColor(.black) //Text color
+        .foregroundColor(.white) //Text color
         //.padding(.leading, 10)
     }
 }

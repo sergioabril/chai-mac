@@ -39,7 +39,7 @@ struct ContentView: View {
                         Spacer()
                             .frame(width: 15)
                         ZStack{
-                            Image("barIcon")
+                            Image("barIcon_white")
                                 .resizable()
                                 .frame(width: 24, height: 24)
                                 .aspectRatio(contentMode: .fill)

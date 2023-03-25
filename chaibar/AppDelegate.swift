@@ -11,9 +11,6 @@ import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    
-    var statusBar: StatusBarController?
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
       
         
@@ -22,6 +19,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // of its windows.
         NSApp.setActivationPolicy(.accessory)
         
+        // Force App Dark mode
+        NSApp.appearance = NSAppearance(named: .darkAqua)
+        
         // Close main app window
         if let window = NSApplication.shared.windows.first {
             window.close()
@@ -29,9 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Initial Logic
         _ = Singleton.shared.logicOnStart()
-        
-        // Create status bar
-        statusBar = StatusBarController()
+    
         
         // Register Hotkey to open window
         HotkeySolution.registerOpenHotkey(_callOnTrigger: {

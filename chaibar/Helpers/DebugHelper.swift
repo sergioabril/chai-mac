@@ -12,7 +12,7 @@ class DebugHelper {
     public static let API_DEBUG_MODE = false
     
     /// LOG
-    public static let LOG_DEBUG_VERBOSE = true
+    public static let LOG_DEBUG_VERBOSE = false
     
     ///func print
     public static func log(_ items: Any...){

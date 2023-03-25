@@ -32,6 +32,7 @@ class Singleton: NSObject, NSWindowDelegate {
     
     // MARK: Pointers
     var currentState = CurrentState()
+    var statusBar: StatusBarController?
 
     // MARK: variables
     var promptPanel: FloatingBar?
@@ -136,7 +137,8 @@ class Singleton: NSObject, NSWindowDelegate {
             DebugHelper.logError("logicOnStart - REFRESH Error \(error)")
         }
         */
-                
+               
+
 
         //Force to get the userData by colling it
         let currentUserData = self.getUserData();
@@ -164,11 +166,17 @@ class Singleton: NSObject, NSWindowDelegate {
             }
         }
         
+        
+        
+        // Load status bar when the settings are loaded, since it checks for license etc
+        statusBar = StatusBarController()
     }
     
     
     func cleanLicenseInfo()
     {
+        DebugHelper.log("Clean License Info")
+        
         currentState.licenseEmail = nil
         currentState.serverToken = nil
         currentState.serverTokenExpiration = nil
@@ -433,6 +441,10 @@ class Singleton: NSObject, NSWindowDelegate {
                             currentUserD.serverToken = self.currentState.serverToken
                             currentUserD.serverTokenExpiration = self.currentState.serverTokenExpiration
                             self.saveUserData()
+                            
+                            
+                            /// Refresh status bar
+                            self.statusBar!.updateBarOptions()
                             
                             
                             DebugHelper.log("Server token expires at \(self.currentState.serverTokenExpiration)")
